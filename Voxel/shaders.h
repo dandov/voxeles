@@ -14,6 +14,10 @@ layout(location = 1) in vec3 color;
 
 out vec3 oColor;
 
+// uniform mat4 worldFromModel;
+// uniform mat4 viewFromWorld;
+// uniform mat4 projFromView;
+
 void main(void) {
 	gl_Position = vec4(posModel, 1.0);
 	oColor = color;

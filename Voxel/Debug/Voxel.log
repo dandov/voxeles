@@ -103,30 +103,147 @@ c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.1
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\istream(970): warning C4820: 'std::basic_iostream<wchar_t,std::char_traits<wchar_t>>': '4' bytes padding added after base class 'std::basic_ostream<wchar_t,std::char_traits<wchar_t>>'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\istream(976): note: see reference to class template instantiation 'std::basic_iostream<wchar_t,std::char_traits<wchar_t>>' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\istream(970): warning C4820: 'std::basic_iostream<wchar_t,std::char_traits<wchar_t>>': '4' bytes padding added after data member '<alignment member>'
-c:\users\dando\desktop\voxel\voxel\main.cpp(60): warning C5039: 'glfwSetErrorCallback': pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavior may occur if this function throws an exception.
-c:\users\dando\desktop\voxel\voxel\main.cpp(122): warning C4100: 'window': unreferenced formal parameter
-c:\users\dando\desktop\voxel\voxel\main.cpp(122): warning C5039: 'glfwSetWindowSizeCallback': pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavior may occur if this function throws an exception.
-c:\users\dando\desktop\voxel\voxel\main.cpp(132): warning C4100: 'mods': unreferenced formal parameter
-c:\users\dando\desktop\voxel\voxel\main.cpp(132): warning C4100: 'scancode': unreferenced formal parameter
-c:\users\dando\desktop\voxel\voxel\main.cpp(132): warning C5039: 'glfwSetKeyCallback': pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavior may occur if this function throws an exception.
-c:\users\dando\desktop\voxel\voxel\main.cpp(56): warning C4100: 'argv': unreferenced formal parameter
-c:\users\dando\desktop\voxel\voxel\main.cpp(56): warning C4100: 'argc': unreferenced formal parameter
-c:\users\dando\desktop\voxel\voxel\main.cpp(183): warning C4365: 'argument': conversion from 'GLint' to 'const unsigned int', signed/unsigned mismatch
-c:\users\dando\desktop\voxel\voxel\main.cpp(226): warning C4365: 'argument': conversion from 'GLint' to 'const unsigned int', signed/unsigned mismatch
-c:\users\dando\desktop\voxel\voxel\main.cpp(291): warning C4365: 'argument': conversion from 'unsigned int' to 'GLsizeiptr', signed/unsigned mismatch
-c:\users\dando\desktop\voxel\voxel\main.cpp(304): warning C4365: 'argument': conversion from 'unsigned int' to 'GLsizeiptr', signed/unsigned mismatch
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\setup.hpp(33): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_bool2.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec2.hpp(46): warning C4201: nonstandard extension used: nameless struct/union
+  c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec2.hpp(217): note: see reference to class template instantiation 'glm::vec<2,T,Q>' being compiled
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec2.hpp(47): warning C4201: nonstandard extension used: nameless struct/union
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec2.hpp(48): warning C4201: nonstandard extension used: nameless struct/union
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_bool2_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_float2.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_float2_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_double2.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_double2_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_int2.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_int2_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_uint2.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_uint2_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_bool3.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec3.hpp(49): warning C4201: nonstandard extension used: nameless struct/union
+  c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec3.hpp(250): note: see reference to class template instantiation 'glm::vec<3,T,Q>' being compiled
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec3.hpp(50): warning C4201: nonstandard extension used: nameless struct/union
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec3.hpp(51): warning C4201: nonstandard extension used: nameless struct/union
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_bool3_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_float3.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_float3_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_double3.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_double3_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_int3.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_int3_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_uint3.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_uint3_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_bool4.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(46): warning C4201: nonstandard extension used: nameless struct/union
+  c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(322): note: see reference to class template instantiation 'glm::vec<4,T,Q>' being compiled
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(47): warning C4201: nonstandard extension used: nameless struct/union
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(48): warning C4201: nonstandard extension used: nameless struct/union
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_bool4_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_float4.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_float4_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_double4.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_double4_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_double4_precision.hpp(6): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_int4.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_int4_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_uint4.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\vector_uint4_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double2x2.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_mat2x2.inl(1): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double2x3.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double2x3_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float2x3.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float2x3_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double2x4.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double2x4_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float2x4.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float2x4_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double3x2.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double3x2_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float3x2.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float3x2_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double3x3.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_mat3x3.inl(1): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double3x3_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float3x3.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float3x3_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double3x4.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double3x4_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float3x4.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float3x4_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double4x2.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double4x2_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float4x2.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float4x2_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double4x3.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double4x3_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float4x3.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float4x3_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double4x4.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_mat4x4.inl(1): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double4x4_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float4x4.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float4x4_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_matrix.inl(1): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_geometric.inl(1): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_exponential.inl(4): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_exponential_simd.inl(4): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_geometric.inl(2): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_common.inl(4): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_common_simd.inl(6): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_geometric_simd.inl(4): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_matrix_simd.inl(4): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_matrix_simd.inl(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_double2x2_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float2x2.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_float2x2_precision.hpp(5): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(4): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_integer_simd.inl(1): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\gtc\matrix_transform.hpp(24): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\gtc\matrix_transform.hpp(25): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\gtc\matrix_transform.hpp(26): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\gtc\matrix_transform.hpp(27): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\gtc\matrix_transform.hpp(28): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_projection.hpp(23): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\gtc\constants.hpp(16): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\scalar_constants.hpp(14): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_projection.hpp(24): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_projection.hpp(25): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_projection.hpp(26): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\gtc\matrix_transform.hpp(29): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_clip_space.hpp(23): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_clip_space.hpp(24): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_clip_space.hpp(25): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\gtc\matrix_transform.hpp(30): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_transform.hpp(23): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_transform.hpp(24): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_transform.hpp(25): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\ext\matrix_transform.hpp(26): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\gtc\matrix_transform.inl(1): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\gtc\matrix_transform.inl(2): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\include\glm\gtc\matrix_transform.inl(3): warning C4464: relative include path contains '..'
+c:\users\dando\desktop\voxel\voxel\main.cpp(61): warning C5039: 'glfwSetErrorCallback': pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavior may occur if this function throws an exception.
+c:\users\dando\desktop\voxel\voxel\main.cpp(123): warning C4100: 'window': unreferenced formal parameter
+c:\users\dando\desktop\voxel\voxel\main.cpp(123): warning C5039: 'glfwSetWindowSizeCallback': pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavior may occur if this function throws an exception.
+c:\users\dando\desktop\voxel\voxel\main.cpp(133): warning C4100: 'mods': unreferenced formal parameter
+c:\users\dando\desktop\voxel\voxel\main.cpp(133): warning C4100: 'scancode': unreferenced formal parameter
+c:\users\dando\desktop\voxel\voxel\main.cpp(133): warning C5039: 'glfwSetKeyCallback': pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavior may occur if this function throws an exception.
+c:\users\dando\desktop\voxel\voxel\main.cpp(57): warning C4100: 'argv': unreferenced formal parameter
+c:\users\dando\desktop\voxel\voxel\main.cpp(57): warning C4100: 'argc': unreferenced formal parameter
+c:\users\dando\desktop\voxel\voxel\main.cpp(190): warning C4365: 'argument': conversion from 'GLint' to 'const unsigned int', signed/unsigned mismatch
+c:\users\dando\desktop\voxel\voxel\main.cpp(233): warning C4365: 'argument': conversion from 'GLint' to 'const unsigned int', signed/unsigned mismatch
+c:\users\dando\desktop\voxel\voxel\main.cpp(290): warning C4365: 'argument': conversion from 'unsigned int' to 'GLsizeiptr', signed/unsigned mismatch
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(715): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(708): note: while compiling class template member function 'std::vector<GLchar,std::allocator<char>>::vector(const unsigned int,const _Alloc &)'
           with
           [
               _Alloc=std::allocator<char>
           ]
-  c:\users\dando\desktop\voxel\voxel\main.cpp(183): note: see reference to function template instantiation 'std::vector<GLchar,std::allocator<char>>::vector(const unsigned int,const _Alloc &)' being compiled
+  c:\users\dando\desktop\voxel\voxel\main.cpp(190): note: see reference to function template instantiation 'std::vector<GLchar,std::allocator<char>>::vector(const unsigned int,const _Alloc &)' being compiled
           with
           [
               _Alloc=std::allocator<char>
           ]
-  c:\users\dando\desktop\voxel\voxel\main.cpp(183): note: see reference to class template instantiation 'std::vector<GLchar,std::allocator<char>>' being compiled
+  c:\users\dando\desktop\voxel\voxel\main.cpp(190): note: see reference to class template instantiation 'std::vector<GLchar,std::allocator<char>>' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\streambuf(674): warning C4820: 'std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>>': '3' bytes padding added after data member 'std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>>::_Failed'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xlocnum(1453): note: see reference to class template instantiation 'std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>>' being compiled
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xlocnum(1453): note: while compiling class template member function 'std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>> std::num_put<wchar_t,std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>>>::do_put(_OutIt,std::ios_base &,_Elem,const void *) const'
@@ -243,15 +360,15 @@ c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.1
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(161): warning C4820: 'std::basic_ostream<char,std::char_traits<char>>::sentry': '3' bytes padding added after data member 'std::basic_ostream<char,std::char_traits<char>>::sentry::_Ok'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(443): note: see reference to class template instantiation 'std::basic_ostream<char,std::char_traits<char>>::sentry' being compiled
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(441): note: while compiling class template member function 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(double)'
-  c:\users\dando\desktop\voxel\voxel\main.cpp(131): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(double)' being compiled
+  c:\users\dando\desktop\voxel\voxel\main.cpp(132): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(double)' being compiled
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(679): note: see reference to class template instantiation 'std::basic_ostream<char,std::char_traits<char>>' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(453): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(333): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(321): note: while compiling class template member function 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(unsigned int)'
-  c:\users\dando\desktop\voxel\voxel\main.cpp(20): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(unsigned int)' being compiled
+  c:\users\dando\desktop\voxel\voxel\main.cpp(22): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(unsigned int)' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(313): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(296): note: while compiling class template member function 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(int)'
-  c:\users\dando\desktop\voxel\voxel\main.cpp(59): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(int)' being compiled
+  c:\users\dando\desktop\voxel\voxel\main.cpp(60): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(int)' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xlocnum(1595): warning C4365: 'initializing': conversion from 'int' to 'size_t', signed/unsigned mismatch
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xlocnum(1593): note: while compiling class template member function 'std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>> std::num_put<wchar_t,std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>>>::_Iput(_OutIt,std::ios_base &,_Elem,char *,size_t) const'
           with
@@ -293,7 +410,7 @@ c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.1
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(176): note: while compiling class template member function 'void std::basic_ostream<char,std::char_traits<char>>::_Osfx(void)'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(139): note: see reference to function template instantiation 'void std::basic_ostream<char,std::char_traits<char>>::_Osfx(void)' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(818): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
-  c:\users\dando\desktop\voxel\voxel\main.cpp(19): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::operator <<<std::char_traits<char>>(std::basic_ostream<char,std::char_traits<char>> &,const char *)' being compiled
+  c:\users\dando\desktop\voxel\voxel\main.cpp(21): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::operator <<<std::char_traits<char>>(std::basic_ostream<char,std::char_traits<char>> &,const char *)' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(758): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(778): note: see reference to function template instantiation 'void std::vector<GLfloat,std::allocator<_Ty>>::_Range_construct_or_tidy<const _Elem*>(_Iter,_Iter,std::forward_iterator_tag)' being compiled
           with
@@ -315,13 +432,13 @@ c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.1
               _Ty=GLfloat,
               _Alloc=std::allocator<GLfloat>
           ]
-  c:\users\dando\desktop\voxel\voxel\main.cpp(264): note: see reference to function template instantiation 'std::vector<GLfloat,std::allocator<_Ty>>::vector(std::initializer_list<_Ty>,const _Alloc &)' being compiled
+  c:\users\dando\desktop\voxel\voxel\main.cpp(272): note: see reference to function template instantiation 'std::vector<GLfloat,std::allocator<_Ty>>::vector(std::initializer_list<_Ty>,const _Alloc &)' being compiled
           with
           [
               _Ty=GLfloat,
               _Alloc=std::allocator<GLfloat>
           ]
-  c:\users\dando\desktop\voxel\voxel\main.cpp(264): note: see reference to class template instantiation 'std::vector<GLfloat,std::allocator<_Ty>>' being compiled
+  c:\users\dando\desktop\voxel\voxel\main.cpp(272): note: see reference to class template instantiation 'std::vector<GLfloat,std::allocator<_Ty>>' being compiled
           with
           [
               _Ty=GLfloat
@@ -472,7 +589,6 @@ c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.1
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\cmath(251): warning C4514: 'remainder': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\cmath(256): warning C4514: 'remquo': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\cmath(262): warning C4514: 'rint': unreferenced inline function has been removed
-c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\cmath(267): warning C4514: 'round': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\cmath(272): warning C4514: 'scalbln': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\cmath(277): warning C4514: 'scalbn': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\cmath(282): warning C4514: 'sin': unreferenced inline function has been removed
@@ -1129,4 +1245,91 @@ c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.1
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ios(336): warning C4514: 'std::skipws': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ios(342): warning C4514: 'std::unitbuf': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ios(348): warning C4514: 'std::uppercase': unreferenced inline function has been removed
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xmmintrin.h(454): warning C4514: '_mm_cvtpi8_ps': unreferenced inline function has been removed
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xmmintrin.h(471): warning C4514: '_mm_cvtpu8_ps': unreferenced inline function has been removed
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xmmintrin.h(485): warning C4514: '_mm_cvtps_pi8': unreferenced inline function has been removed
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xmmintrin.h(500): warning C4514: '_mm_cvtpi32x2_ps': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4_simd.inl(150): warning C4514: 'glm::detail::compute_vec4_div<float,glm::aligned_lowp,true>::call': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(103): warning C4514: 'glm::vec<4,float,glm::aligned_lowp>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(103): warning C4514: 'glm::vec<4,float,glm::aligned_mediump>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(103): warning C4514: 'glm::vec<4,float,3>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(103): warning C4514: 'glm::vec<4,int,glm::aligned_lowp>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(103): warning C4514: 'glm::vec<4,int,glm::aligned_mediump>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(103): warning C4514: 'glm::vec<4,int,3>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(104): warning C4514: 'glm::vec<4,float,glm::aligned_lowp>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(104): warning C4514: 'glm::vec<4,float,glm::aligned_mediump>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4.hpp(104): warning C4514: 'glm::vec<4,float,3>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4_simd.inl(428): warning C4514: 'glm::vec<4,int,glm::aligned_lowp>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4_simd.inl(434): warning C4514: 'glm::vec<4,int,glm::aligned_mediump>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4_simd.inl(440): warning C4514: 'glm::vec<4,int,3>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4_simd.inl(446): warning C4514: 'glm::vec<4,float,glm::aligned_lowp>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4_simd.inl(452): warning C4514: 'glm::vec<4,float,glm::aligned_mediump>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_vec4_simd.inl(458): warning C4514: 'glm::vec<4,float,3>::vec': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\exponential.h(10): warning C4514: 'glm_vec1_sqrt_lowp': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_exponential_simd.inl(26): warning C4514: 'glm::detail::compute_sqrt<4,float,glm::aligned_lowp,true>::call': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_common.inl(33): warning C4514: 'glm::abs': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_common.inl(663): warning C4514: 'glm::floatBitsToInt': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_common.inl(682): warning C4514: 'glm::floatBitsToUint': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_common.inl(701): warning C4514: 'glm::intBitsToFloat': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_common.inl(720): warning C4514: 'glm::uintBitsToFloat': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(15): warning C4514: 'glm_vec1_add': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(25): warning C4514: 'glm_vec1_sub': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(35): warning C4514: 'glm_vec1_mul': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(45): warning C4514: 'glm_vec1_div': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(50): warning C4514: 'glm_vec4_div_lowp': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(55): warning C4514: 'glm_vec4_swizzle_xyzw': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(64): warning C4514: 'glm_vec1_fma': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(82): warning C4514: 'glm_vec4_abs': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(87): warning C4514: 'glm_ivec4_abs': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(145): warning C4514: 'glm_vec4_roundEven': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(155): warning C4514: 'glm_vec4_ceil': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(168): warning C4514: 'glm_vec4_fract': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(175): warning C4514: 'glm_vec4_mod': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(191): warning C4514: 'glm_vec4_mix': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(199): warning C4514: 'glm_vec4_step': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(205): warning C4514: 'glm_vec4_smoothstep': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(219): warning C4514: 'glm_vec4_nan': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\common.h(233): warning C4514: 'glm_vec4_inf': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\geometric.h(20): warning C4514: 'glm_vec4_distance': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\geometric.h(46): warning C4514: 'glm_vec1_dot': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\geometric.h(65): warning C4514: 'glm_vec4_cross': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\geometric.h(77): warning C4514: 'glm_vec4_normalize': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\geometric.h(85): warning C4514: 'glm_vec4_faceforward': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\geometric.h(94): warning C4514: 'glm_vec4_reflect': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\geometric.h(103): warning C4514: 'glm_vec4_refract': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\matrix.h(10): warning C4514: 'glm_mat4_matrixCompMult': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\matrix.h(18): warning C4514: 'glm_mat4_add': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\matrix.h(26): warning C4514: 'glm_mat4_sub': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\matrix.h(34): warning C4514: 'glm_mat4_mul_vec4': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\matrix.h(53): warning C4514: 'glm_vec4_mul_mat4': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\matrix.h(80): warning C4514: 'glm_mat4_mul': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\matrix.h(156): warning C4514: 'glm_mat4_transpose': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\matrix.h(169): warning C4514: 'glm_mat4_determinant_highp': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\matrix.h(383): warning C4514: 'glm_mat4_determinant_lowp': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\matrix.h(446): warning C4514: 'glm_mat4_determinant': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\matrix.h(509): warning C4514: 'glm_mat4_inverse': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\matrix.h(730): warning C4514: 'glm_mat4_inverse_lowp': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_matrix_simd.inl(63): warning C4514: 'glm::outerProduct': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_matrix_simd.inl(73): warning C4514: 'glm::outerProduct': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_matrix_simd.inl(83): warning C4514: 'glm::outerProduct': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_half.inl(19): warning C4514: 'glm::detail::uif32::uif32': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\type_half.inl(23): warning C4514: 'glm::detail::uif32::uif32': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(9): warning C4514: 'glm::packUnorm2x16': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(25): warning C4514: 'glm::unpackUnorm2x16': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(38): warning C4514: 'glm::packSnorm2x16': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(54): warning C4514: 'glm::unpackSnorm2x16': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(67): warning C4514: 'glm::packUnorm4x8': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(85): warning C4514: 'glm::unpackUnorm4x8': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(98): warning C4514: 'glm::packSnorm4x8': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(116): warning C4514: 'glm::unpackSnorm4x8': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(129): warning C4514: 'glm::packDouble2x32': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(143): warning C4514: 'glm::unpackDouble2x32': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(156): warning C4514: 'glm::packHalf2x16': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_packing.inl(170): warning C4514: 'glm::unpackHalf2x16': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_integer.inl(176): warning C4514: 'glm::uaddCarry': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_integer.inl(194): warning C4514: 'glm::usubBorrow': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_integer.inl(213): warning C4514: 'glm::umulExtended': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\detail\func_integer.inl(229): warning C4514: 'glm::imulExtended': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\integer.h(8): warning C4514: 'glm_i128_interleave': unreferenced inline function has been removed
+c:\users\dando\desktop\voxel\voxel\include\glm\simd\integer.h(62): warning C4514: 'glm_i128_interleave2': unreferenced inline function has been removed
   Voxel.vcxproj -> C:\Users\dando\Desktop\Voxel\Debug\Voxel.exe

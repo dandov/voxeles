@@ -7,6 +7,8 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "shaders.h"
 
@@ -35,8 +37,7 @@ struct Shader {
 // Struct that holds the VAO and VBO ids for the vertex data.
 struct VertexData {
 	GLuint vao;
-	GLuint vbo_pos;
-	GLuint vbo_color;
+	GLuint vbo;
 };
 
 // Creates and uploads the shaders in shaders.h and stores their IDs
@@ -141,6 +142,12 @@ int main(int argc, char* argv[]) {
 
 	VertexData vertex_data;
 	CreateAndUploadVertexData(&vertex_data);
+
+	//glm::mat4 camera =
+	//	glm::lookAt(
+	//		glm::vec3(0.0f, 0.0f, -10.f),
+	//		glm::vec3(0.0f, 0.0f, 0.0f),
+	//		glm::vec3(0.0f, 1.0f, 0.0f));
 	
 	// Set the color used to clear the screen.
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -261,20 +268,12 @@ void CreateAndUploadVertexData(VertexData* vertex_data) {
 	assert(vertex_data);
 
 	// Prepare the vertex buffer data. The default culled face is CCW.
+	// Each vertex is 3 floats for position and 3 floats for color.
 	std::vector<GLfloat> vertices = {
-		-1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		1.0f, 1.0f, 0.0f,
-		-1.0f, 1.0f, 0.0f
-	};
-
-	// Match the location of the vertices above and do a gradient from left
-	// to right, blue to red.
-	std::vector<GLfloat> colors = {
-		0.0f, 0.0, 1.0f,
-		1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		0.0f, 0.0, 1.0f,
+		-1.0f, -1.0f, 0.0f, 0.0f, 0.0, 1.0f,
+		1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+		1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+		-1.0f, 1.0f, 0.0f, -1.0f, 1.0f, 0.0f
 	};
 
 	// Create the Vertex Array Object where all the buffers will be bound.
@@ -282,29 +281,24 @@ void CreateAndUploadVertexData(VertexData* vertex_data) {
 	glBindVertexArray(vertex_data->vao);
 
 	// Create and upload the VBO for the positions.
-	glGenBuffers(1, &vertex_data->vbo_pos);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_data->vbo_pos);
+	glGenBuffers(1, &vertex_data->vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex_data->vbo);
 	glBufferData(
 		GL_ARRAY_BUFFER,
 		vertices.size() * sizeof(GLfloat),
 		&vertices[0],
 		GL_STATIC_DRAW);
 	// The id of the attribute. Matches location of "posModel" in the shader.
+	const int vertex_size = 6 * sizeof(GLfloat);
 	const GLuint pos_attrib_id = 0;
-	glVertexAttribPointer(pos_attrib_id, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glVertexAttribPointer(pos_attrib_id, 3, GL_FLOAT, GL_FALSE, vertex_size,
+		reinterpret_cast<GLvoid*>(0));
 	glEnableVertexAttribArray(pos_attrib_id);
-
-	// Create and upload the VBO for the colors.
-	glGenBuffers(1, &vertex_data->vbo_color);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_data->vbo_color);
-	glBufferData(
-		GL_ARRAY_BUFFER,
-		colors.size() * sizeof(GLfloat),
-		&colors[0],
-		GL_STATIC_DRAW);
 	// The id of the attribute. Matches location of "color" in the shader.
 	const GLuint color_attrib_id = 1;
-	glVertexAttribPointer(color_attrib_id, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	// The color has an offset 3 floats within the vertex (last arg).
+	glVertexAttribPointer(color_attrib_id, 3, GL_FLOAT, GL_FALSE, vertex_size,
+		reinterpret_cast<GLvoid*>(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(color_attrib_id);
 
 	assert(CheckGlError());
@@ -322,8 +316,7 @@ void DestroyVertexData(VertexData* vertex_data) {
 	// Unbind any of the VBOs.
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	// Destroy the VBOs.
-	glDeleteBuffers(1, &vertex_data->vbo_pos);
-	glDeleteBuffers(1, &vertex_data->vbo_color);
+	glDeleteBuffers(1, &vertex_data->vbo);
 
 	// Unbind the VAO.
 	glBindVertexArray(0);
