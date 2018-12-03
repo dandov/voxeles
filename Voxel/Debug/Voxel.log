@@ -103,12 +103,30 @@ c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.1
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\istream(970): warning C4820: 'std::basic_iostream<wchar_t,std::char_traits<wchar_t>>': '4' bytes padding added after base class 'std::basic_ostream<wchar_t,std::char_traits<wchar_t>>'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\istream(976): note: see reference to class template instantiation 'std::basic_iostream<wchar_t,std::char_traits<wchar_t>>' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\istream(970): warning C4820: 'std::basic_iostream<wchar_t,std::char_traits<wchar_t>>': '4' bytes padding added after data member '<alignment member>'
-c:\users\dando\desktop\voxel\voxel\main.cpp(14): warning C5039: 'glfwSetErrorCallback': pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavior may occur if this function throws an exception.
-c:\users\dando\desktop\voxel\voxel\main.cpp(73): warning C4100: 'mods': unreferenced formal parameter
-c:\users\dando\desktop\voxel\voxel\main.cpp(73): warning C4100: 'scancode': unreferenced formal parameter
-c:\users\dando\desktop\voxel\voxel\main.cpp(73): warning C5039: 'glfwSetKeyCallback': pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavior may occur if this function throws an exception.
-c:\users\dando\desktop\voxel\voxel\main.cpp(8): warning C4100: 'argv': unreferenced formal parameter
-c:\users\dando\desktop\voxel\voxel\main.cpp(8): warning C4100: 'argc': unreferenced formal parameter
+c:\users\dando\desktop\voxel\voxel\main.cpp(60): warning C5039: 'glfwSetErrorCallback': pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavior may occur if this function throws an exception.
+c:\users\dando\desktop\voxel\voxel\main.cpp(122): warning C4100: 'window': unreferenced formal parameter
+c:\users\dando\desktop\voxel\voxel\main.cpp(122): warning C5039: 'glfwSetWindowSizeCallback': pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavior may occur if this function throws an exception.
+c:\users\dando\desktop\voxel\voxel\main.cpp(132): warning C4100: 'mods': unreferenced formal parameter
+c:\users\dando\desktop\voxel\voxel\main.cpp(132): warning C4100: 'scancode': unreferenced formal parameter
+c:\users\dando\desktop\voxel\voxel\main.cpp(132): warning C5039: 'glfwSetKeyCallback': pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavior may occur if this function throws an exception.
+c:\users\dando\desktop\voxel\voxel\main.cpp(56): warning C4100: 'argv': unreferenced formal parameter
+c:\users\dando\desktop\voxel\voxel\main.cpp(56): warning C4100: 'argc': unreferenced formal parameter
+c:\users\dando\desktop\voxel\voxel\main.cpp(183): warning C4365: 'argument': conversion from 'GLint' to 'const unsigned int', signed/unsigned mismatch
+c:\users\dando\desktop\voxel\voxel\main.cpp(226): warning C4365: 'argument': conversion from 'GLint' to 'const unsigned int', signed/unsigned mismatch
+c:\users\dando\desktop\voxel\voxel\main.cpp(291): warning C4365: 'argument': conversion from 'unsigned int' to 'GLsizeiptr', signed/unsigned mismatch
+c:\users\dando\desktop\voxel\voxel\main.cpp(304): warning C4365: 'argument': conversion from 'unsigned int' to 'GLsizeiptr', signed/unsigned mismatch
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(715): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(708): note: while compiling class template member function 'std::vector<GLchar,std::allocator<char>>::vector(const unsigned int,const _Alloc &)'
+          with
+          [
+              _Alloc=std::allocator<char>
+          ]
+  c:\users\dando\desktop\voxel\voxel\main.cpp(183): note: see reference to function template instantiation 'std::vector<GLchar,std::allocator<char>>::vector(const unsigned int,const _Alloc &)' being compiled
+          with
+          [
+              _Alloc=std::allocator<char>
+          ]
+  c:\users\dando\desktop\voxel\voxel\main.cpp(183): note: see reference to class template instantiation 'std::vector<GLchar,std::allocator<char>>' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\streambuf(674): warning C4820: 'std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>>': '3' bytes padding added after data member 'std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>>::_Failed'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xlocnum(1453): note: see reference to class template instantiation 'std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>>' being compiled
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xlocnum(1453): note: while compiling class template member function 'std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>> std::num_put<wchar_t,std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>>>::do_put(_OutIt,std::ios_base &,_Elem,const void *) const'
@@ -225,12 +243,15 @@ c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.1
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(161): warning C4820: 'std::basic_ostream<char,std::char_traits<char>>::sentry': '3' bytes padding added after data member 'std::basic_ostream<char,std::char_traits<char>>::sentry::_Ok'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(443): note: see reference to class template instantiation 'std::basic_ostream<char,std::char_traits<char>>::sentry' being compiled
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(441): note: while compiling class template member function 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(double)'
-  c:\users\dando\desktop\voxel\voxel\main.cpp(72): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(double)' being compiled
+  c:\users\dando\desktop\voxel\voxel\main.cpp(131): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(double)' being compiled
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(679): note: see reference to class template instantiation 'std::basic_ostream<char,std::char_traits<char>>' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(453): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(333): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(321): note: while compiling class template member function 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(unsigned int)'
+  c:\users\dando\desktop\voxel\voxel\main.cpp(20): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(unsigned int)' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(313): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(296): note: while compiling class template member function 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(int)'
-  c:\users\dando\desktop\voxel\voxel\main.cpp(13): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(int)' being compiled
+  c:\users\dando\desktop\voxel\voxel\main.cpp(59): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::basic_ostream<char,std::char_traits<char>>::operator <<(int)' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xlocnum(1595): warning C4365: 'initializing': conversion from 'int' to 'size_t', signed/unsigned mismatch
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xlocnum(1593): note: while compiling class template member function 'std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>> std::num_put<wchar_t,std::ostreambuf_iterator<wchar_t,std::char_traits<wchar_t>>>::_Iput(_OutIt,std::ios_base &,_Elem,char *,size_t) const'
           with
@@ -272,11 +293,118 @@ c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.1
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(176): note: while compiling class template member function 'void std::basic_ostream<char,std::char_traits<char>>::_Osfx(void)'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(139): note: see reference to function template instantiation 'void std::basic_ostream<char,std::char_traits<char>>::_Osfx(void)' being compiled
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\ostream(818): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
-  c:\users\dando\desktop\voxel\voxel\main.cpp(12): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::operator <<<std::char_traits<char>>(std::basic_ostream<char,std::char_traits<char>> &,const char *)' being compiled
+  c:\users\dando\desktop\voxel\voxel\main.cpp(19): note: see reference to function template instantiation 'std::basic_ostream<char,std::char_traits<char>> &std::operator <<<std::char_traits<char>>(std::basic_ostream<char,std::char_traits<char>> &,const char *)' being compiled
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(758): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(778): note: see reference to function template instantiation 'void std::vector<GLfloat,std::allocator<_Ty>>::_Range_construct_or_tidy<const _Elem*>(_Iter,_Iter,std::forward_iterator_tag)' being compiled
+          with
+          [
+              _Ty=GLfloat,
+              _Elem=GLfloat,
+              _Iter=const GLfloat *
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(778): note: see reference to function template instantiation 'void std::vector<GLfloat,std::allocator<_Ty>>::_Range_construct_or_tidy<const _Elem*>(_Iter,_Iter,std::forward_iterator_tag)' being compiled
+          with
+          [
+              _Ty=GLfloat,
+              _Elem=GLfloat,
+              _Iter=const GLfloat *
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(775): note: while compiling class template member function 'std::vector<GLfloat,std::allocator<_Ty>>::vector(std::initializer_list<_Ty>,const _Alloc &)'
+          with
+          [
+              _Ty=GLfloat,
+              _Alloc=std::allocator<GLfloat>
+          ]
+  c:\users\dando\desktop\voxel\voxel\main.cpp(264): note: see reference to function template instantiation 'std::vector<GLfloat,std::allocator<_Ty>>::vector(std::initializer_list<_Ty>,const _Alloc &)' being compiled
+          with
+          [
+              _Ty=GLfloat,
+              _Alloc=std::allocator<GLfloat>
+          ]
+  c:\users\dando\desktop\voxel\voxel\main.cpp(264): note: see reference to class template instantiation 'std::vector<GLfloat,std::allocator<_Ty>>' being compiled
+          with
+          [
+              _Ty=GLfloat
+          ]
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xlocnum(214): warning C4571: Informational: catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xlocnum(201): note: while compiling class template member function 'void std::numpunct<wchar_t>::_Init(const std::_Locinfo &,bool)'
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xlocnum(161): note: see reference to function template instantiation 'void std::numpunct<wchar_t>::_Init(const std::_Locinfo &,bool)' being compiled
   c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xlocnum(1685): note: see reference to class template instantiation 'std::numpunct<wchar_t>' being compiled
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xmemory(312): warning C4365: 'argument': conversion from 'int' to 'size_t', signed/unsigned mismatch
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xmemory(335): note: see reference to function template instantiation '_FwdIt std::_Zero_range<_FwdIt>(const _FwdIt,const _FwdIt)' being compiled
+          with
+          [
+              _FwdIt=char *
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xmemory(345): note: see reference to function template instantiation '_FwdIt std::_Uninitialized_value_construct_n1<_FwdIt,_Diff,_Alloc>(_FwdIt,_Diff,_Alloc &,std::true_type)' being compiled
+          with
+          [
+              _FwdIt=char *,
+              _Diff=unsigned int,
+              _Alloc=std::allocator<char>
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(1911): note: see reference to function template instantiation '_FwdIt *std::_Uninitialized_value_construct_n<char*,unsigned int,std::allocator<char>>(_FwdIt,_Diff,_Alloc &)' being compiled
+          with
+          [
+              _FwdIt=char *,
+              _Diff=unsigned int,
+              _Alloc=std::allocator<char>
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(1910): note: while compiling class template member function 'char *std::vector<GLchar,std::allocator<char>>::_Udefault(char *,const unsigned int)'
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(714): note: see reference to function template instantiation 'char *std::vector<GLchar,std::allocator<char>>::_Udefault(char *,const unsigned int)' being compiled
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xutility(2432): warning C4365: 'initializing': conversion from 'int' to 'size_t', signed/unsigned mismatch
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xmemory(202): note: see reference to function template instantiation '_OutIt std::_Copy_memmove<_Ty1*,_Ty2*>(_InIt,_InIt,_OutIt)' being compiled
+          with
+          [
+              _OutIt=float *,
+              _Ty1=GLfloat,
+              _Ty2=float,
+              _InIt=const GLfloat *
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xmemory(218): note: see reference to function template instantiation '_Ty2 *std::_Uninitialized_copy_al_unchecked<const _Elem,float,_Alloc>(_Ty1 *const ,_Ty1 *const ,_Ty2 *const ,_Alloc &,std::_Really_trivial_ptr_iterator_tag,std::true_type)' being compiled
+          with
+          [
+              _Ty2=float,
+              _Elem=GLfloat,
+              _Alloc=std::allocator<GLfloat>,
+              _Ty1=GLfloat
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(1922): note: see reference to function template instantiation '_FwdIt *std::_Uninitialized_copy<_Iter,float*,std::allocator<_Ty>>(const _InIt,const _InIt,_FwdIt,_Alloc &)' being compiled
+          with
+          [
+              _FwdIt=float *,
+              _Iter=const GLfloat *,
+              _Ty=GLfloat,
+              _InIt=const GLfloat *,
+              _Alloc=std::allocator<GLfloat>
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(757): note: see reference to function template instantiation 'float *std::vector<GLfloat,std::allocator<_Ty>>::_Ucopy<_Iter>(_Iter,_Iter,float *)' being compiled
+          with
+          [
+              _Ty=GLfloat,
+              _Iter=const GLfloat *
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(757): note: see reference to function template instantiation 'float *std::vector<GLfloat,std::allocator<_Ty>>::_Ucopy<_Iter>(_Iter,_Iter,float *)' being compiled
+          with
+          [
+              _Ty=GLfloat,
+              _Iter=const GLfloat *
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(778): note: see reference to function template instantiation 'void std::vector<GLfloat,std::allocator<_Ty>>::_Range_construct_or_tidy<const _Elem*>(_Iter,_Iter,std::forward_iterator_tag)' being compiled
+          with
+          [
+              _Ty=GLfloat,
+              _Elem=GLfloat,
+              _Iter=const GLfloat *
+          ]
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\vector(778): note: see reference to function template instantiation 'void std::vector<GLfloat,std::allocator<_Ty>>::_Range_construct_or_tidy<const _Elem*>(_Iter,_Iter,std::forward_iterator_tag)' being compiled
+          with
+          [
+              _Ty=GLfloat,
+              _Elem=GLfloat,
+              _Iter=const GLfloat *
+          ]
+c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xutility(2432): warning C4365: 'initializing': conversion from 'int' to 'const size_t', signed/unsigned mismatch
 c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdlib.h(358): warning C4514: 'abs': unreferenced inline function has been removed
 c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdlib.h(363): warning C4514: 'abs': unreferenced inline function has been removed
 c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdlib.h(368): warning C4514: 'div': unreferenced inline function has been removed
@@ -783,11 +911,7 @@ c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.1
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xutility(121): warning C4514: 'std::_Container_base12::_Container_base12': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xutility(126): warning C4514: 'std::_Container_base12::operator =': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xutility(131): warning C4514: 'std::_Container_base12::_Getpfirst': unreferenced inline function has been removed
-c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xutility(145): warning C4514: 'std::_Iterator_base12::_Iterator_base12': unreferenced inline function has been removed
-c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xutility(150): warning C4514: 'std::_Iterator_base12::_Iterator_base12': unreferenced inline function has been removed
-c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xutility(173): warning C4514: 'std::_Iterator_base12::~_Iterator_base12': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xutility(210): warning C4514: 'std::_Iterator_base12::_Clrcont': unreferenced inline function has been removed
-c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xutility(215): warning C4514: 'std::_Iterator_base12::_Getcont': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xutility(220): warning C4514: 'std::_Iterator_base12::_Getpnext': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xutility(595): warning C4514: 'std::_Unused_parameter::_Unused_parameter': unreferenced inline function has been removed
 c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.14.26428\include\xmemory0(63): warning C4514: 'std::_Is_pow_2': unreferenced inline function has been removed
