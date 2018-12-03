@@ -38,6 +38,7 @@ struct Shader {
 struct VertexData {
 	GLuint vao;
 	GLuint vbo;
+	GLuint ibo;
 };
 
 // Creates and uploads the shaders in shaders.h and stores their IDs
@@ -160,7 +161,9 @@ int main(int argc, char* argv[]) {
 		// Update logic.
 
 		// Rendering logic.
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//
+		// Render using indices. Count and type refer to the IBO.
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, nullptr);
 
 
 		glfwSwapBuffers(window);
@@ -267,13 +270,17 @@ void DestroyShaders(Shader* shader) {
 void CreateAndUploadVertexData(VertexData* vertex_data) {
 	assert(vertex_data);
 
-	// Prepare the vertex buffer data. The default culled face is CCW.
-	// Each vertex is 3 floats for position and 3 floats for color.
+	// Prepare the vertex and index buffer data. The default culled
+	// face is CCW. Each vertex is 3 floats for position and 3 floats
+	// for color.
 	std::vector<GLfloat> vertices = {
-		-1.0f, -1.0f, 0.0f, 0.0f, 0.0, 1.0f,
+		/* pos */ -1.0f, -1.0f, 0.0f, /* colors */ 0.0f, 0.0, 1.0f,
 		1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
 		1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-		-1.0f, 1.0f, 0.0f, -1.0f, 1.0f, 0.0f
+		-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f
+	};
+	std::vector<GLubyte> indices = {
+		0, 1, 2, 0, 2, 3
 	};
 
 	// Create the Vertex Array Object where all the buffers will be bound.
@@ -301,6 +308,15 @@ void CreateAndUploadVertexData(VertexData* vertex_data) {
 		reinterpret_cast<GLvoid*>(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(color_attrib_id);
 
+	// Create and upload the IBO for the indices of the triangles.
+	glGenBuffers(1, &vertex_data->ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertex_data->ibo);
+	glBufferData(
+		GL_ELEMENT_ARRAY_BUFFER,
+		indices.size() * sizeof(GLubyte),
+		&indices[0],
+		GL_STATIC_DRAW);
+
 	assert(CheckGlError());
 }
 
@@ -313,10 +329,13 @@ void DestroyVertexData(VertexData* vertex_data) {
 	glDisableVertexAttribArray(pos_attrib_id);
 	glDisableVertexAttribArray(color_attrib_id);
 
-	// Unbind any of the VBOs.
+	// Unbind and destroy the VBO.
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	// Destroy the VBOs.
 	glDeleteBuffers(1, &vertex_data->vbo);
+
+	// Unbind and destroy the IBO.
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDeleteBuffers(1, &vertex_data->ibo);
 
 	// Unbind the VAO.
 	glBindVertexArray(0);
