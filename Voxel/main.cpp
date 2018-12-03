@@ -88,7 +88,14 @@ int main(int argc, char* argv[]) {
 	// Request a double frame buffer.
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
 
-	GLFWwindow* window = glfwCreateWindow(1920, 1080, "Voxels", nullptr, nullptr);
+	const float width = 1080;
+	const float height = 1080;
+	const float aspect_ratio = width / height;
+	// TODO(dandov): Disable resizing from because the aspect ratio is used to
+	// calculate the perspective matrix.
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+	GLFWwindow* window = glfwCreateWindow(width, height, "Voxels", nullptr, nullptr);
 	if (!window) {
 		std::cout << "Failed to create GLFW Window.\n";
 		glfwTerminate();
@@ -144,11 +151,32 @@ int main(int argc, char* argv[]) {
 	VertexData vertex_data;
 	CreateAndUploadVertexData(&vertex_data);
 
-	//glm::mat4 camera =
-	//	glm::lookAt(
-	//		glm::vec3(0.0f, 0.0f, -10.f),
-	//		glm::vec3(0.0f, 0.0f, 0.0f),
-	//		glm::vec3(0.0f, 1.0f, 0.0f));
+	// Use an identity matrix for |world_from_model|.
+	glm::mat4 world_from_model = glm::mat4(1.0);
+	// Set the camera parallel to the floor, in front and looking towards the
+	// geometry from the Z axis.
+	glm::mat4 view_from_world =
+		glm::lookAt(
+			glm::vec3(0.0f, 0.0f, -10.f),
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 1.0f, 0.0f));
+	// FOVY of 45 degrees, precalculated aspect ratio from the window dimensions,
+	// znear of 0.1 and zfar of 100 (relative values to the camera, z points
+	// inside the screen).
+	glm::mat4 proj_from_view =
+		glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
+
+	// Set the values of the uniforms.
+	GLuint model_mat_loc =
+		glGetUniformLocation(shader.program_id, "worldFromModel");
+	glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, &world_from_model[0][0]);
+	GLuint view_mat_loc =
+		glGetUniformLocation(shader.program_id, "viewFromWorld");
+	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, &view_from_world[0][0]);
+	GLuint proj_mat_loc =
+		glGetUniformLocation(shader.program_id, "projFromView");
+	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, &proj_from_view[0][0]);
+	assert(CheckGlError());
 	
 	// Set the color used to clear the screen.
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
