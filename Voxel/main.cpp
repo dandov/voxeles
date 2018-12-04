@@ -154,10 +154,10 @@ int main(int argc, char* argv[]) {
 	// Use an identity matrix for |world_from_model|.
 	glm::mat4 world_from_model = glm::mat4(1.0);
 	// Set the camera parallel to the floor, in front and looking towards the
-	// geometry from the Z axis.
+	// geometry from the +Z axis (outside the monitor).
 	glm::mat4 view_from_world =
 		glm::lookAt(
-			glm::vec3(0.0f, 0.0f, -10.f),
+			glm::vec3(0.0f, 0.0f, 10.f),
 			glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec3(0.0f, 1.0f, 0.0f));
 	// FOVY of 45 degrees, precalculated aspect ratio from the window dimensions,
@@ -178,6 +178,16 @@ int main(int argc, char* argv[]) {
 	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, &proj_from_view[0][0]);
 	assert(CheckGlError());
 	
+	const double PI = std::acos(-1);
+	const double rotation_speed = PI / 2.0;
+	float angle = 0.0;
+	double previous_time = glfwGetTime();
+
+	// Enable back face culling. Front faces are CCW.
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
+
 	// Set the color used to clear the screen.
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	while (!glfwWindowShouldClose(window)) {
@@ -187,6 +197,14 @@ int main(int argc, char* argv[]) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Update logic.
+		glm::mat4 rot_matrix =
+			glm::rotate(world_from_model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, &rot_matrix[0][0]);
+
+		double current_time = glfwGetTime();
+		float dt = static_cast<float>(current_time - previous_time);
+		previous_time = current_time;
+		angle += rotation_speed * dt;
 
 		// Rendering logic.
 		//
