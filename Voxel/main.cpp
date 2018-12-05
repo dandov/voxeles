@@ -39,6 +39,7 @@ struct VertexData {
 	GLuint vao;
 	GLuint vbo;
 	GLuint ibo;
+	size_t index_length;
 };
 
 // Creates and uploads the shaders in shaders.h and stores their IDs
@@ -209,7 +210,8 @@ int main(int argc, char* argv[]) {
 		// Rendering logic.
 		//
 		// Render using indices. Count and type refer to the IBO.
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, nullptr);
+		glDrawElements(
+			GL_TRIANGLES, vertex_data.index_length, GL_UNSIGNED_BYTE, nullptr);
 
 
 		glfwSwapBuffers(window);
@@ -362,6 +364,7 @@ void CreateAndUploadVertexData(VertexData* vertex_data) {
 		indices.size() * sizeof(GLubyte),
 		&indices[0],
 		GL_STATIC_DRAW);
+	vertex_data->index_length = indices.size();
 
 	assert(CheckGlError());
 }

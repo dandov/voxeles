@@ -33,7 +33,6 @@ void main() {
 	fragColor = vec4(oColor, 1.0);
 }
 )";
-
 }  // namespace shaders
 
 #endif  // VOXEL_SHADERS
