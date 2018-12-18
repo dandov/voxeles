@@ -20,7 +20,7 @@ uniform mat4 projFromView;
 
 void main(void) {
 	gl_Position = projFromView * viewFromWorld * worldFromModel * vec4(posModel, 1.0);
-	oColor = color;
+	oColor = vec3(posModel.xy, 1.0 - posModel.z);
 }
 )";
 	const GLchar* FRAGMENT_SHADER = R"(

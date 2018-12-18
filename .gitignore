@@ -1,0 +1,16 @@
+.vs
+
+Debug/*
+Release/*
+
+Voxel/Debug/*
+Voxel/Debug/**/*
+Voxel/Release/*
+Voxel/Release/**/*
+
+./Voxel/Debug/*
+./Voxel/Debug/**/*
+./Voxel/Release/*
+./Voxel/Release/**/*
+
+Voxel/Voxel.*

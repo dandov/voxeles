@@ -153,7 +153,8 @@ int main(int argc, char* argv[]) {
 	CreateAndUploadVertexData(&vertex_data);
 
 	// Use an identity matrix for |world_from_model|.
-	glm::mat4 world_from_model = glm::mat4(1.0);
+	glm::mat4 world_from_model =
+		glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, -0.5f));
 	// Set the camera parallel to the floor, in front and looking towards the
 	// geometry from the +Z axis (outside the monitor).
 	glm::mat4 view_from_world =
@@ -186,7 +187,10 @@ int main(int argc, char* argv[]) {
 
 	// Enable back face culling. Front faces are CCW.
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	// To render the outside of the cube, cull the back faces.
+	// glCullFace(GL_BACK);
+	// To render the inside of the cube, cull the front faces.
+	glCullFace(GL_FRONT);
 	glFrontFace(GL_CCW);
 
 	// Set the color used to clear the screen.
@@ -198,14 +202,17 @@ int main(int argc, char* argv[]) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Update logic.
+		// angle = 0.0f;
 		glm::mat4 rot_matrix =
-			glm::rotate(world_from_model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
+			glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 0.0f, 0.0f));
+		rot_matrix = rot_matrix * world_from_model;
 		glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, &rot_matrix[0][0]);
 
 		double current_time = glfwGetTime();
 		float dt = static_cast<float>(current_time - previous_time);
 		previous_time = current_time;
 		angle += rotation_speed * dt;
+
 
 		// Rendering logic.
 		//
@@ -321,14 +328,40 @@ void CreateAndUploadVertexData(VertexData* vertex_data) {
 	// Prepare the vertex and index buffer data. The default culled
 	// face is CCW. Each vertex is 3 floats for position and 3 floats
 	// for color.
+	//std::vector<GLfloat> vertices = {
+	//	/* pos */ -1.0f, -1.0f, 0.0f, /* colors */ 0.0f, 0.0, 1.0f,
+	//	1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+	//	1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+	//	-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+	//};
+	//std::vector<GLubyte> indices = {
+	//	0, 1, 2, 0, 2, 3,
+	//};
 	std::vector<GLfloat> vertices = {
-		/* pos */ -1.0f, -1.0f, 0.0f, /* colors */ 0.0f, 0.0, 1.0f,
-		1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-		1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-		-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f
+		// Front face.
+		0.0f, 0.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
+		1.0f, 0.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
+		1.0f, 1.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
+		// Back face
+		0.0f, 0.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
+		0.0f, 1.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
 	};
 	std::vector<GLubyte> indices = {
-		0, 1, 2, 0, 2, 3
+		// Front face.
+		0, 1, 2, 0, 2, 3,
+		// Back face.
+		5, 4, 7, 5, 7, 6,
+		// Top Face.
+		 3, 2, 6, 3, 6, 7,
+		// Bottom face.
+		4, 5, 1, 4, 1, 0,
+		// Right face.
+		1, 5, 6, 1, 6, 2,
+		// Left face.
+		4, 0, 3, 4, 3, 7,
 	};
 
 	// Create the Vertex Array Object where all the buffers will be bound.
