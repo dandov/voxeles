@@ -27,34 +27,60 @@ bool CheckGlError() {
 	return result;
 }
 
+class Window {
+  public:
+	  ~Window() {
+		  DestroyWindow(this);
+	  }
+
+	  static bool CreateWindow(Window* window, int width, int height);
+
+	  GLFWwindow* handle;
+
+  private:
+	  static void DestroyWindow(Window* window);
+};
+
 // Struct that holds the ids of the different shader objects.
-struct Shader {
+class Shader {
+  public:
+	~Shader() {
+		DestroyShaders(this);
+	}
+
+	// Creates and uploads the shaders in shaders.h and stores their IDs
+	// in |shader|.
+	static bool CreateShaders(Shader* shader);
+
 	GLuint program_id;
 	GLuint vertex_id;
 	GLuint fragment_id;
+
+  private:
+	// Destroys the ids in |shader|.
+	static void DestroyShaders(Shader* shader);
 };
 
 // Struct that holds the VAO and VBO ids for the vertex data.
-struct VertexData {
+class VertexData {
+  public:
+	~VertexData() {
+		DestroyVertexData(this);
+	}
+
+	// Creates and sets up the VAO with its VBOs bound. |vertex_data| will hold
+	// the id of the generated VAO and VBOs.
+	static bool CreateAndUploadVertexData(VertexData* vertex_data);
+
 	GLuint vao;
 	GLuint vbo;
 	GLuint ibo;
 	size_t index_length;
+
+  private:
+	// Disables and destroys the VAO and associated VBOs of |vertex_data|.
+	static void DestroyVertexData(VertexData* vertex_data);
 };
-
-// Creates and uploads the shaders in shaders.h and stores their IDs
-// in |shader|.
-void CreateShaders(Shader* shader);
-
-// Destroys the ids in |shader|.
-void DestroyShaders(Shader* shader);
-
-// Creates and sets up the VAO with its VBOs bound. |vertex_data| will hold
-// the id of the generated VAO and VBOs.
-void CreateAndUploadVertexData(VertexData* vertex_data);
-
-// Disables and destroys the VAO and associated VBOs of |vertex_data|.
-void DestroyVertexData(VertexData* vertex_data);
 
 int main(int argc, char* argv[]) {
 	glfwSetErrorCallback([] (int error_code, const char* error_message) {
@@ -67,42 +93,13 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 
-	// Ask for desktop OpenGL 4.5.
-	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-	// Request only core functionality i.e. without pre 3.1 deprecated APIs.
-	// Use GLFW_OPENGL_COMPAT_PROFILE to get that deprecated stuff.
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	// For the requested version, ask to keep the deprecated APIs.
-	// Otherwise deprecated APIs (currently a hint that they will be removed in
-	// the future)  will be removed. This is only used on MacOS (of course).
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_FALSE);
-	// Ask for an RGB888 buffer.
-	glfwWindowHint(GLFW_RED_BITS, 8);
-	glfwWindowHint(GLFW_GREEN_BITS, 8);
-	glfwWindowHint(GLFW_BLUE_BITS, 8);
-	glfwWindowHint(GLFW_ALPHA_BITS, 0);
-	// 4x antialiasing. Number of samples for multisampling. I think it means
-	// the buffer is 4x size and that allows to do 4 samples per pixel.
-	glfwWindowHint(GLFW_SAMPLES, 4);
-	// Request a double frame buffer.
-	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
-
-	const float width = 1080;
-	const float height = 1080;
-	const float aspect_ratio = width / height;
-	// TODO(dandov): Disable resizing from because the aspect ratio is used to
-	// calculate the perspective matrix.
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-	GLFWwindow* window = glfwCreateWindow(width, height, "Voxels", nullptr, nullptr);
-	if (!window) {
-		std::cout << "Failed to create GLFW Window.\n";
-		glfwTerminate();
+	constexpr int width = 1080;
+	constexpr int height = 1080;
+	constexpr float aspect_ratio = static_cast<float>(width) / height;
+	Window window;
+	if (!Window::CreateWindow(&window, width, height))
 		return 0;
-	}
-	glfwMakeContextCurrent(window);
+	
 	const GLubyte* gl_renderer = glGetString(GL_RENDERER);
 	const GLubyte* gl_version = glGetString(GL_VERSION);
 	const GLubyte* glsl_version = glGetString(GL_SHADING_LANGUAGE_VERSION);
@@ -115,42 +112,19 @@ int main(int argc, char* argv[]) {
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
 		std::cout << "Failed to initialize GLEW.\n";
-		glfwDestroyWindow(window);
-		glfwTerminate();
 		return 0;
 	}
 	// GLEW causes a GL error when initializing so all GL errors need to be
 	// flushed. "GL ERROR[1280]: invalid enumerantAssertion failed".
 	CheckGlError();
 
-
-	// Callback function that gets notified when the window is resized,
-	// that sets the OpenGL viewport accordingly.
-	glfwSetWindowSizeCallback(
-		window, [] (GLFWwindow* window, int width, int height) {
-			glViewport(0, 0, width, height);
-		});
-
-	glfwSetKeyCallback(
-		window, [] (GLFWwindow* window, int key, int scancode, int action, int mods) {
-			// Request exit when ESC is pressed.
-			if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-				glfwSetWindowShouldClose(window, GLFW_TRUE);
-
-			std::cout << "Pressed key: " << key << ", at time: "
-					  << glfwGetTime() << "\n";
-		});
-
-	// V-Sync: Wait for |1| screen refresh to swap the buffers. If 0 is used then
-	// the buffers will swap immediately and some of them might not be used if
-	// the fps is faster than the refresh rate of the monitor.
-	glfwSwapInterval(1);
-
 	Shader shader;
-	CreateShaders(&shader);
+	if (!Shader::CreateShaders(&shader))
+		return 0;
 
 	VertexData vertex_data;
-	CreateAndUploadVertexData(&vertex_data);
+	if (!VertexData::CreateAndUploadVertexData(&vertex_data))
+		return 0;
 
 	// Use an identity matrix for |world_from_model|.
 	glm::mat4 world_from_model =
@@ -193,9 +167,21 @@ int main(int argc, char* argv[]) {
 	glCullFace(GL_FRONT);
 	glFrontFace(GL_CCW);
 
+	GLuint first_pass_buffer;
+	glGenFramebuffers(1, &first_pass_buffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, first_pass_buffer);
+
+
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		//assert(CheckGlError());
+		//return 0;
+	}
+
 	// Set the color used to clear the screen.
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	while (!glfwWindowShouldClose(window)) {
+	while (!glfwWindowShouldClose(window.handle)) {
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		// Clear the curren viewport using the current clear color. The value
 		// passed to this function is a bitmask that defines which buffers
 		// are cleared. In this case only the color buffer is cleared.
@@ -221,17 +207,11 @@ int main(int argc, char* argv[]) {
 			GL_TRIANGLES, vertex_data.index_length, GL_UNSIGNED_BYTE, nullptr);
 
 
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(window.handle);
 		// Process input events.
 		glfwPollEvents();
 	}
-
-	DestroyVertexData(&vertex_data);
-	DestroyShaders(&shader);
 	
-	// Cleanup on exit.
-	glfwDestroyWindow(window);
-	glfwTerminate();
 	return 0;
 }
 
@@ -256,7 +236,7 @@ bool CheckShaderStatus(GLuint shader) {
 	return false;
 }
 
-void CreateShaders(Shader* shader) {
+bool Shader::CreateShaders(Shader* shader) {
 	// Create the vertex shader.
 	shader->vertex_id = glCreateShader(GL_VERTEX_SHADER);
 	// Sets the source of |shader->vertex_id| (only 1 shader) to
@@ -301,14 +281,16 @@ void CreateShaders(Shader* shader) {
 
 	// If the shader creation process failed at some stage clean everything up.
 	if (!success)
-		DestroyShaders(shader);
+		return false;
 
 	// Set the program as current so that it is used when rendering.
 	glUseProgram(shader->program_id);
 	assert(CheckGlError());
+
+	return true;
 }
 
-void DestroyShaders(Shader* shader) {
+void Shader::DestroyShaders(Shader* shader) {
 	// Unbind the program in case it is being used.
 	glUseProgram(0);
 	// Detach the shaders from the program and delete them.
@@ -322,7 +304,7 @@ void DestroyShaders(Shader* shader) {
 	assert(CheckGlError());
 }
 
-void CreateAndUploadVertexData(VertexData* vertex_data) {
+bool VertexData::CreateAndUploadVertexData(VertexData* vertex_data) {
 	assert(vertex_data);
 
 	// Prepare the vertex and index buffer data. The default culled
@@ -399,10 +381,10 @@ void CreateAndUploadVertexData(VertexData* vertex_data) {
 		GL_STATIC_DRAW);
 	vertex_data->index_length = indices.size();
 
-	assert(CheckGlError());
+	return CheckGlError();
 }
 
-void DestroyVertexData(VertexData* vertex_data) {
+void VertexData::DestroyVertexData(VertexData* vertex_data) {
 	// Disable the vertex attributes. These values match the ones used in
 	// the matching functions "glVertexAttribPointer" and
 	// "glEnableVertexAttribArray".
@@ -425,4 +407,75 @@ void DestroyVertexData(VertexData* vertex_data) {
 	glDeleteVertexArrays(1, &vertex_data->vao);
 
 	assert(CheckGlError());
+}
+
+bool Window::CreateWindow(Window* window, int width, int height) {
+	// Ask for desktop OpenGL 4.5.
+	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+	// Request only core functionality i.e. without pre 3.1 deprecated APIs.
+	// Use GLFW_OPENGL_COMPAT_PROFILE to get that deprecated stuff.
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	// For the requested version, ask to keep the deprecated APIs.
+	// Otherwise deprecated APIs (currently a hint that they will be removed in
+	// the future)  will be removed. This is only used on MacOS (of course).
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_FALSE);
+	// Ask for an RGB888 buffer.
+	glfwWindowHint(GLFW_RED_BITS, 8);
+	glfwWindowHint(GLFW_GREEN_BITS, 8);
+	glfwWindowHint(GLFW_BLUE_BITS, 8);
+	glfwWindowHint(GLFW_ALPHA_BITS, 0);
+	// 4x antialiasing. Number of samples for multisampling. I think it means
+	// the buffer is 4x size and that allows to do 4 samples per pixel.
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	// Request a double frame buffer.
+	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+
+	const float aspect_ratio = static_cast<float>(width) / height;
+	// TODO(dandov): Disable resizing from because the aspect ratio is used to
+	// calculate the perspective matrix.
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+	window->handle = glfwCreateWindow(width, height, "Voxels", nullptr, nullptr);
+	if (!window) {
+		std::cout << "Failed to create GLFW Window.\n";
+		glfwTerminate();
+		return false;
+	}
+
+	// Callback function that gets notified when the window is resized,
+	// that sets the OpenGL viewport accordingly.
+	glfwSetWindowSizeCallback(
+		window->handle, [](GLFWwindow* window, int width, int height) {
+		glViewport(0, 0, width, height);
+	});
+
+	glfwSetKeyCallback(window->handle,
+		[](GLFWwindow* window, int key, int scancode, int action, int mods) {
+		// Request exit when ESC is pressed.
+		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+			glfwSetWindowShouldClose(window, GLFW_TRUE);
+
+		std::cout << "Pressed key: " << key << ", at time: "
+			<< glfwGetTime() << "\n";
+	});
+
+	// Enable the OpenGL context.
+	glfwMakeContextCurrent(window->handle);
+
+	// V-Sync: Wait for |1| screen refresh to swap the buffers. If 0 is used then
+	// the buffers will swap immediately and some of them might not be used if
+	// the fps is faster than the refresh rate of the monitor.
+	//
+	// TODO(dandov): In the surface pro this value has to be 0, otherwise, the
+	// frame rate is very choppy.
+	glfwSwapInterval(0);
+
+	return true;
+}
+
+void Window::DestroyWindow(Window* window) {
+	glfwDestroyWindow(window->handle);
+	glfwTerminate();
 }
