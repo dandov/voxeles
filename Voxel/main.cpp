@@ -50,7 +50,8 @@ class Shader {
 
 	// Creates and uploads the shaders in shaders.h and stores their IDs
 	// in |shader|.
-	static bool CreateShaders(Shader* shader);
+	static bool CreateShaders(Shader* shader, const GLchar* vertex,
+							  const GLchar* fragment);
 
 	GLuint program_id;
 	GLuint vertex_id;
@@ -82,15 +83,31 @@ class VertexData {
 	static void DestroyVertexData(VertexData* vertex_data);
 };
 
+class Texture {
+  public:
+	  ~Texture() {
+		  DestroyTexture(this);
+	  }
+
+	  static bool CreateTexture(Texture* texture, int width, int height, void* data);
+
+	  GLuint id;
+
+  private:
+	  static void DestroyTexture(Texture* texture);
+};
+
 class FrameBuffer {
   public:
 	  ~FrameBuffer() {
 		  DestroyFrameBuffer(this);
 	  }
 
-	  static bool CreateFrameBuffer(FrameBuffer* frame_buffer);
+	  static bool CreateFrameBuffer(FrameBuffer* frame_buffer, int width, int height);
 
 	  GLuint id;
+	  GLuint depth_stencil_renderbuffer_id;
+	  Texture texture;
 
   private:
 	  static void DestroyFrameBuffer(FrameBuffer* frame_buffer);
@@ -111,8 +128,10 @@ int main(int argc, char* argv[]) {
 	constexpr int height = 1080;
 	constexpr float aspect_ratio = static_cast<float>(width) / height;
 	Window window;
-	if (!Window::CreateWindow(&window, width, height))
+	if (!Window::CreateWindow(&window, width, height)) {
+		assert(false);
 		return 0;
+	}
 	
 	const GLubyte* gl_renderer = glGetString(GL_RENDERER);
 	const GLubyte* gl_version = glGetString(GL_VERSION);
@@ -133,12 +152,17 @@ int main(int argc, char* argv[]) {
 	CheckGlError();
 
 	Shader shader;
-	if (!Shader::CreateShaders(&shader))
+	if (!Shader::CreateShaders(
+			&shader, shaders::VERTEX_SHADER, shaders::FRAGMENT_SHADER)) {
+		assert(false);
 		return 0;
+	}
 
 	VertexData vertex_data;
-	if (!VertexData::CreateAndUploadVertexData(&vertex_data))
+	if (!VertexData::CreateAndUploadVertexData(&vertex_data)) {
+		assert(false);
 		return 0;
+	}
 
 	// Use an identity matrix for |world_from_model|.
 	glm::mat4 world_from_model =
@@ -182,22 +206,15 @@ int main(int argc, char* argv[]) {
 	glFrontFace(GL_CCW);
 
 	FrameBuffer back_face_buffer;
-	if (!FrameBuffer::CreateFrameBuffer(&back_face_buffer)) {
+	if (!FrameBuffer::CreateFrameBuffer(&back_face_buffer, width, height)) {
+		assert(false);
 		return 0;
-	}
-
-	
-
-
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-		//assert(CheckGlError());
-		//return 0;
 	}
 
 	// Set the color used to clear the screen.
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	while (!glfwWindowShouldClose(window.handle)) {
+		// Bind the window frame buffer.
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		// Clear the curren viewport using the current clear color. The value
 		// passed to this function is a bitmask that defines which buffers
@@ -231,16 +248,62 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
-bool FrameBuffer::CreateFrameBuffer(FrameBuffer* frame_buffer) {
+// TODO(dandov): Modify this to have mipmaps and other stuff when needed.
+bool Texture::CreateTexture(Texture* texture, int width, int height, void* data) {
+	// Create the texture.
+	glGenTextures(1, &texture->id);
+	glBindTexture(GL_TEXTURE_2D, texture->id);
+	glTexImage2D(GL_TEXTURE_2D, /* level = */ 0, GL_RGB, width, height,
+		/* bordert = */ 0, GL_RGB, GL_FLOAT, data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// Clean before leaving this function.
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return CheckGlError();
+}
+
+void Texture::DestroyTexture(Texture* texture) {
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glDeleteTextures(1, &texture->id);
+}
+
+
+bool FrameBuffer::CreateFrameBuffer(FrameBuffer* frame_buffer, int width, int height) {
 	glGenFramebuffers(1, &frame_buffer->id);
 	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer->id);
 
+	if (!Texture::CreateTexture(&frame_buffer->texture, width, height, nullptr)) {
+		assert(false);
+		return false;
+	}
 
+	// Set the texture that was just created as the data of the frame buffer.
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+		frame_buffer->texture.id, /* level = */ 0);
 
-	return true;
+	// Create the depth and stencil attachments.
+	glGenRenderbuffers(1, &frame_buffer->depth_stencil_renderbuffer_id);
+	glBindRenderbuffer(GL_RENDERBUFFER, frame_buffer->depth_stencil_renderbuffer_id);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	// Add the attachments to the frame buffer now that they are allocated.
+	glFramebufferRenderbuffer(
+		GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER,
+		frame_buffer->depth_stencil_renderbuffer_id);
+
+	// Make sure that everything is correct before unbinding the frame buffer.
+	const bool success =
+		glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+
+	// Clean before returning.
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	return success && CheckGlError();
 }
 
 void FrameBuffer::DestroyFrameBuffer(FrameBuffer* frame_buffer) {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDeleteFramebuffers(1, &frame_buffer->id);
 }
 
@@ -265,13 +328,14 @@ bool CheckShaderStatus(GLuint shader) {
 	return false;
 }
 
-bool Shader::CreateShaders(Shader* shader) {
+bool Shader::CreateShaders(Shader* shader, const GLchar* vertex,
+						 const GLchar* fragment) {
 	// Create the vertex shader.
 	shader->vertex_id = glCreateShader(GL_VERTEX_SHADER);
 	// Sets the source of |shader->vertex_id| (only 1 shader) to
 	// |shaders::VERTEX_SHADER|. The last argument is an array of string lengths
 	// and nullptr tells GL that the strings are null terminated.
-	glShaderSource(shader->vertex_id, 1, &shaders::VERTEX_SHADER, nullptr);
+	glShaderSource(shader->vertex_id, 1, &vertex, nullptr);
 	glCompileShader(shader->vertex_id);
 	bool success = CheckShaderStatus(shader->vertex_id);
 	assert(success);
@@ -279,7 +343,7 @@ bool Shader::CreateShaders(Shader* shader) {
 	// Create the fragment shader.
 	shader->fragment_id = glCreateShader(GL_FRAGMENT_SHADER);
 	// Same as in the vertex shader but for the fragment source.
-	glShaderSource(shader->fragment_id, 1, &shaders::FRAGMENT_SHADER, nullptr);
+	glShaderSource(shader->fragment_id, 1, &fragment, nullptr);
 	glCompileShader(shader->fragment_id);
 	success = CheckShaderStatus(shader->fragment_id);
 	assert(success);
