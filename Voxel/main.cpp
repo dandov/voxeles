@@ -71,7 +71,10 @@ class VertexData {
 
 	// Creates and sets up the VAO with its VBOs bound. |vertex_data| will hold
 	// the id of the generated VAO and VBOs.
-	static bool CreateAndUploadVertexData(VertexData* vertex_data);
+	static bool CreateAndUploadVertexData(
+		VertexData* vertex_data,
+		const std::vector<GLfloat> vertices,
+		const std::vector<GLubyte> indices);
 
 	GLuint vao;
 	GLuint vbo;
@@ -158,8 +161,47 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 
+	// Prepare the vertex and index buffer data. The default culled
+	// face is CCW. Each vertex is 3 floats for position and 3 floats
+	// for color.
+	//std::vector<GLfloat> vertices = {
+	//	/* pos */ -1.0f, -1.0f, 0.0f, /* colors */ 0.0f, 0.0, 1.0f,
+	//	1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+	//	1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+	//	-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+	//};
+	//std::vector<GLubyte> indices = {
+	//	0, 1, 2, 0, 2, 3,
+	//};
+	std::vector<GLfloat> vertices = {
+		// Front face.
+		0.0f, 0.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
+		1.0f, 0.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
+		1.0f, 1.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
+		// Back face
+		0.0f, 0.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
+		0.0f, 1.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
+	};
+	std::vector<GLubyte> indices = {
+		// Front face.
+		0, 1, 2, 0, 2, 3,
+		// Back face.
+		5, 4, 7, 5, 7, 6,
+		// Top Face.
+		3, 2, 6, 3, 6, 7,
+		// Bottom face.
+		4, 5, 1, 4, 1, 0,
+		// Right face.
+		1, 5, 6, 1, 6, 2,
+		// Left face.
+		4, 0, 3, 4, 3, 7,
+	};
 	VertexData vertex_data;
-	if (!VertexData::CreateAndUploadVertexData(&vertex_data)) {
+	if (!VertexData::CreateAndUploadVertexData(
+			&vertex_data, vertices, indices)) {
 		assert(false);
 		return 0;
 	}
@@ -397,47 +439,10 @@ void Shader::DestroyShaders(Shader* shader) {
 	assert(CheckGlError());
 }
 
-bool VertexData::CreateAndUploadVertexData(VertexData* vertex_data) {
+bool VertexData::CreateAndUploadVertexData(
+	VertexData* vertex_data, const std::vector<GLfloat> vertices,
+	const std::vector<GLubyte> indices) {
 	assert(vertex_data);
-
-	// Prepare the vertex and index buffer data. The default culled
-	// face is CCW. Each vertex is 3 floats for position and 3 floats
-	// for color.
-	//std::vector<GLfloat> vertices = {
-	//	/* pos */ -1.0f, -1.0f, 0.0f, /* colors */ 0.0f, 0.0, 1.0f,
-	//	1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-	//	1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-	//	-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-	//};
-	//std::vector<GLubyte> indices = {
-	//	0, 1, 2, 0, 2, 3,
-	//};
-	std::vector<GLfloat> vertices = {
-		// Front face.
-		0.0f, 0.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
-		1.0f, 1.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
-		// Back face
-		0.0f, 0.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
-	};
-	std::vector<GLubyte> indices = {
-		// Front face.
-		0, 1, 2, 0, 2, 3,
-		// Back face.
-		5, 4, 7, 5, 7, 6,
-		// Top Face.
-		 3, 2, 6, 3, 6, 7,
-		// Bottom face.
-		4, 5, 1, 4, 1, 0,
-		// Right face.
-		1, 5, 6, 1, 6, 2,
-		// Left face.
-		4, 0, 3, 4, 3, 7,
-	};
 
 	// Create the Vertex Array Object where all the buffers will be bound.
 	glGenVertexArrays(1, &vertex_data->vao);
