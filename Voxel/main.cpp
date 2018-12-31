@@ -239,7 +239,6 @@ int main(int argc, char* argv[]) {
 	// inside the screen).
 	glm::mat4 proj_from_view =
 		glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
-
 	// Set the values of the uniforms.
 	GLuint model_mat_loc =
 		glGetUniformLocation(shader.program_id, "worldFromModel");
@@ -262,6 +261,19 @@ int main(int argc, char* argv[]) {
 		assert(false);
 		return 0;
 	}
+
+	// Set the texture sampler uniform.
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, back_face_buffer.texture.id);
+	const GLuint tex_uniform_loc =
+		glGetUniformLocation(shader.program_id, "firstPassSampler");
+	// Assign the texture unit to the sampler. 0 matches the active texture
+	// GL_TEXTURE0.
+	glUniform1i(tex_uniform_loc, 0);
+	// Unbind the program for cleanup.
+	// Don't unbind the texture from the unit 0.
+	glUseProgram(0);
+	assert(CheckGlError());
 
 	// Set the color used to clear the screen.
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -305,7 +317,6 @@ int main(int argc, char* argv[]) {
 		glUseProgram(quad_shader.program_id);
 		glBindVertexArray(quad_data.vao);
 		glDisable(GL_CULL_FACE);
-		glBindTexture(GL_TEXTURE_2D, back_face_buffer.texture.id);
 		glDrawElements(
 			GL_TRIANGLES, quad_data.index_length, GL_UNSIGNED_BYTE, nullptr);
 
@@ -323,7 +334,7 @@ bool Texture::CreateTexture(Texture* texture, int width, int height, void* data)
 	glGenTextures(1, &texture->id);
 	glBindTexture(GL_TEXTURE_2D, texture->id);
 	glTexImage2D(GL_TEXTURE_2D, /* level = */ 0, GL_RGB, width, height,
-		/* bordert = */ 0, GL_RGB, GL_FLOAT, data);
+		/* border = */ 0, GL_RGB, GL_FLOAT, data);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	// Clean before leaving this function.

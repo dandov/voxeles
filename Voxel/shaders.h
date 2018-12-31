@@ -56,7 +56,8 @@ out vec4 fragColor;
 uniform sampler2D firstPassSampler;
 
 void main() {
-	vec4 tex_color = texture(firstPassSampler, oTexCoords);
+	vec2 uv = vec2(oTexCoords.x, oTexCoords.y);
+	vec4 tex_color = texture(firstPassSampler, uv);
 	fragColor = vec4(tex_color.rgb, 1.0);
 }
 )";
