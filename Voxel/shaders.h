@@ -33,6 +33,30 @@ void main() {
 	fragColor = vec4(oColor, 1.0);
 }
 )";
+
+	const GLchar* QUAD_VERTEX_SHADER = R"(
+#version 450
+
+layout(location = 0) in vec3 posModel;
+layout(location = 1) in vec3 color;
+
+out vec3 oColor;
+
+void main(void) {
+	gl_Position = vec4(posModel, 1.0);
+	oColor = vec3(1.0, 0.0, 0.0);
+}
+)";
+	const GLchar* QUAD_FRAGMENT_SHADER = R"(
+#version 450
+
+in vec3 oColor;
+out vec4 fragColor;
+
+void main() {
+	fragColor = vec4(oColor, 1.0);
+}
+)";
 }  // namespace shaders
 
 #endif  // VOXEL_SHADERS

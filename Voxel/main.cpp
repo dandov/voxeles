@@ -157,22 +157,39 @@ int main(int argc, char* argv[]) {
 	Shader shader;
 	if (!Shader::CreateShaders(
 			&shader, shaders::VERTEX_SHADER, shaders::FRAGMENT_SHADER)) {
-		assert(false);
+		assert(CheckGlError());
 		return 0;
 	}
 
-	// Prepare the vertex and index buffer data. The default culled
-	// face is CCW. Each vertex is 3 floats for position and 3 floats
-	// for color.
-	//std::vector<GLfloat> vertices = {
-	//	/* pos */ -1.0f, -1.0f, 0.0f, /* colors */ 0.0f, 0.0, 1.0f,
-	//	1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-	//	1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-	//	-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-	//};
-	//std::vector<GLubyte> indices = {
-	//	0, 1, 2, 0, 2, 3,
-	//};
+	// Prepare the vertices of the first pass. 3 floats for position and 3
+	// floats for color.
+	std::vector<GLfloat> quad_vertices = {
+		/* pos = */ -1.0f, -1.0f, 0.0f, /* color = */ 0.0f, 0.0f, 0.0f,
+		1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+		1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+		-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+	};
+	std::vector<GLubyte> quad_indices = {
+		0, 1, 2, 0, 2, 3,
+	};
+	VertexData quad_data;
+	if (!VertexData::CreateAndUploadVertexData(
+			&quad_data, quad_vertices, quad_indices)) {
+		assert(CheckGlError());
+		return 0;
+	}
+
+	Shader quad_shader;
+	if (!Shader::CreateShaders(
+		&quad_shader, shaders::QUAD_VERTEX_SHADER,
+		shaders::QUAD_FRAGMENT_SHADER)) {
+		assert(CheckGlError());
+		return 0;
+	}
+
+	// Prepare the vertex and index buffer data of the second pass. The
+	// default culled face is CCW. Each vertex is 3 floats for position
+	// and 3 floats for color.
 	std::vector<GLfloat> vertices = {
 		// Front face.
 		0.0f, 0.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
@@ -202,10 +219,11 @@ int main(int argc, char* argv[]) {
 	VertexData vertex_data;
 	if (!VertexData::CreateAndUploadVertexData(
 			&vertex_data, vertices, indices)) {
-		assert(false);
+		assert(CheckGlError());
 		return 0;
 	}
 
+	glUseProgram(shader.program_id);
 	// Use an identity matrix for |world_from_model|.
 	glm::mat4 world_from_model =
 		glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, -0.5f));
@@ -239,14 +257,6 @@ int main(int argc, char* argv[]) {
 	float angle = 0.0;
 	double previous_time = glfwGetTime();
 
-	// Enable back face culling. Front faces are CCW.
-	glEnable(GL_CULL_FACE);
-	// To render the outside of the cube, cull the back faces.
-	// glCullFace(GL_BACK);
-	// To render the inside of the cube, cull the front faces.
-	glCullFace(GL_FRONT);
-	glFrontFace(GL_CCW);
-
 	FrameBuffer back_face_buffer;
 	if (!FrameBuffer::CreateFrameBuffer(&back_face_buffer, width, height)) {
 		assert(false);
@@ -256,12 +266,23 @@ int main(int argc, char* argv[]) {
 	// Set the color used to clear the screen.
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	while (!glfwWindowShouldClose(window.handle)) {
-		// Bind the window frame buffer.
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		// Bind the first pass framebuffer.
+		glBindFramebuffer(GL_FRAMEBUFFER, back_face_buffer.id);
 		// Clear the curren viewport using the current clear color. The value
 		// passed to this function is a bitmask that defines which buffers
 		// are cleared. In this case only the color buffer is cleared.
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+		glUseProgram(shader.program_id);
+		glBindVertexArray(vertex_data.vao);
+
+		// Enable back face culling. Front faces are CCW.
+		glEnable(GL_CULL_FACE);
+		// To render the outside of the cube, cull the back faces.
+		// glCullFace(GL_BACK);
+		// To render the inside of the cube, cull the front faces.
+		glCullFace(GL_FRONT);
+		glFrontFace(GL_CCW);
 
 		// Update logic.
 		// angle = 0.0f;
@@ -275,12 +296,19 @@ int main(int argc, char* argv[]) {
 		previous_time = current_time;
 		angle += rotation_speed * dt;
 
-		// Rendering logic.
-		//
-		// Render using indices. Count and type refer to the IBO.
+		// Render first pass to texture
 		glDrawElements(
 			GL_TRIANGLES, vertex_data.index_length, GL_UNSIGNED_BYTE, nullptr);
 
+		// Bind the window framebuffer.
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+		glUseProgram(quad_shader.program_id);
+		glBindVertexArray(quad_data.vao);
+		glDisable(GL_CULL_FACE);
+		glDrawElements(
+			GL_TRIANGLES, quad_data.index_length, GL_UNSIGNED_BYTE, nullptr);
 
 		glfwSwapBuffers(window.handle);
 		// Process input events.
