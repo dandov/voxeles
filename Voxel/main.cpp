@@ -272,10 +272,9 @@ int main(int argc, char* argv[]) {
 		// passed to this function is a bitmask that defines which buffers
 		// are cleared. In this case only the color buffer is cleared.
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
+		// Setup the first pass.
 		glUseProgram(shader.program_id);
 		glBindVertexArray(vertex_data.vao);
-
 		// Enable back face culling. Front faces are CCW.
 		glEnable(GL_CULL_FACE);
 		// To render the outside of the cube, cull the back faces.
@@ -285,7 +284,6 @@ int main(int argc, char* argv[]) {
 		glFrontFace(GL_CCW);
 
 		// Update logic.
-		// angle = 0.0f;
 		glm::mat4 rot_matrix =
 			glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 0.0f, 0.0f));
 		rot_matrix = rot_matrix * world_from_model;
@@ -303,7 +301,7 @@ int main(int argc, char* argv[]) {
 		// Bind the window framebuffer.
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
+		// Setup the second pass.
 		glUseProgram(quad_shader.program_id);
 		glBindVertexArray(quad_data.vao);
 		glDisable(GL_CULL_FACE);
