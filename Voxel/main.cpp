@@ -165,9 +165,9 @@ int main(int argc, char* argv[]) {
 	// floats for color.
 	std::vector<GLfloat> quad_vertices = {
 		/* pos = */ -1.0f, -1.0f, 0.0f, /* color = */ 0.0f, 0.0f, 0.0f,
-		1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-		-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+		1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+		1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+		-1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 	};
 	std::vector<GLubyte> quad_indices = {
 		0, 1, 2, 0, 2, 3,
@@ -307,6 +307,7 @@ int main(int argc, char* argv[]) {
 		glUseProgram(quad_shader.program_id);
 		glBindVertexArray(quad_data.vao);
 		glDisable(GL_CULL_FACE);
+		glBindTexture(GL_TEXTURE_2D, back_face_buffer.texture.id);
 		glDrawElements(
 			GL_TRIANGLES, quad_data.index_length, GL_UNSIGNED_BYTE, nullptr);
 

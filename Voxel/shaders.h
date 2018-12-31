@@ -38,23 +38,26 @@ void main() {
 #version 450
 
 layout(location = 0) in vec3 posModel;
-layout(location = 1) in vec3 color;
+layout(location = 1) in vec3 texCoords;
 
-out vec3 oColor;
+out vec2 oTexCoords;
 
 void main(void) {
 	gl_Position = vec4(posModel, 1.0);
-	oColor = vec3(1.0, 0.0, 0.0);
+	oTexCoords = texCoords.xy;
 }
 )";
 	const GLchar* QUAD_FRAGMENT_SHADER = R"(
 #version 450
 
-in vec3 oColor;
+in vec2 oTexCoords;
 out vec4 fragColor;
 
+uniform sampler2D firstPassSampler;
+
 void main() {
-	fragColor = vec4(oColor, 1.0);
+	vec4 tex_color = texture(firstPassSampler, oTexCoords);
+	fragColor = vec4(tex_color.rgb, 1.0);
 }
 )";
 }  // namespace shaders
