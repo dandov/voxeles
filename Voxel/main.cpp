@@ -82,6 +82,20 @@ class VertexData {
 	static void DestroyVertexData(VertexData* vertex_data);
 };
 
+class FrameBuffer {
+  public:
+	  ~FrameBuffer() {
+		  DestroyFrameBuffer(this);
+	  }
+
+	  static bool CreateFrameBuffer(FrameBuffer* frame_buffer);
+
+	  GLuint id;
+
+  private:
+	  static void DestroyFrameBuffer(FrameBuffer* frame_buffer);
+};
+
 int main(int argc, char* argv[]) {
 	glfwSetErrorCallback([] (int error_code, const char* error_message) {
 		std::cout << "GLFW ERROR[" << error_code << "]: "
@@ -167,9 +181,12 @@ int main(int argc, char* argv[]) {
 	glCullFace(GL_FRONT);
 	glFrontFace(GL_CCW);
 
-	GLuint first_pass_buffer;
-	glGenFramebuffers(1, &first_pass_buffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, first_pass_buffer);
+	FrameBuffer back_face_buffer;
+	if (!FrameBuffer::CreateFrameBuffer(&back_face_buffer)) {
+		return 0;
+	}
+
+	
 
 
 
@@ -199,7 +216,6 @@ int main(int argc, char* argv[]) {
 		previous_time = current_time;
 		angle += rotation_speed * dt;
 
-
 		// Rendering logic.
 		//
 		// Render using indices. Count and type refer to the IBO.
@@ -213,6 +229,19 @@ int main(int argc, char* argv[]) {
 	}
 	
 	return 0;
+}
+
+bool FrameBuffer::CreateFrameBuffer(FrameBuffer* frame_buffer) {
+	glGenFramebuffers(1, &frame_buffer->id);
+	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer->id);
+
+
+
+	return true;
+}
+
+void FrameBuffer::DestroyFrameBuffer(FrameBuffer* frame_buffer) {
+	glDeleteFramebuffers(1, &frame_buffer->id);
 }
 
 bool CheckShaderStatus(GLuint shader) {
