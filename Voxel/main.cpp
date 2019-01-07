@@ -241,13 +241,13 @@ int main(int argc, char* argv[]) {
 		glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
 	// Set the values of the uniforms.
 	GLuint model_mat_loc =
-		glGetUniformLocation(shader.program_id, "worldFromModel");
+		glGetUniformLocation(shader.program_id, "uWorldFromModel");
 	glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, &world_from_model[0][0]);
 	GLuint view_mat_loc =
-		glGetUniformLocation(shader.program_id, "viewFromWorld");
+		glGetUniformLocation(shader.program_id, "uViewFromWorld");
 	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, &view_from_world[0][0]);
 	GLuint proj_mat_loc =
-		glGetUniformLocation(shader.program_id, "projFromView");
+		glGetUniformLocation(shader.program_id, "uProjFromView");
 	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, &proj_from_view[0][0]);
 	assert(CheckGlError());
 	
@@ -278,6 +278,17 @@ int main(int argc, char* argv[]) {
 	// Set the color used to clear the screen.
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	while (!glfwWindowShouldClose(window.handle)) {
+		// Update logic.
+		double current_time = glfwGetTime();
+		float dt = static_cast<float>(current_time - previous_time);
+		previous_time = current_time;
+		angle += rotation_speed * dt;
+		glm::mat4 rot_matrix =
+			glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
+		rot_matrix = rot_matrix * world_from_model;
+
+		// First render pass.
+		//
 		// Bind the first pass framebuffer.
 		glBindFramebuffer(GL_FRAMEBUFFER, back_face_buffer.id);
 		// Clear the curren viewport using the current clear color. The value
@@ -294,22 +305,15 @@ int main(int argc, char* argv[]) {
 		// To render the inside of the cube, cull the front faces.
 		glCullFace(GL_FRONT);
 		glFrontFace(GL_CCW);
-
-		// Update logic.
-		glm::mat4 rot_matrix =
-			glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
-		rot_matrix = rot_matrix * world_from_model;
+		// Rotate.
 		glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, &rot_matrix[0][0]);
-
-		double current_time = glfwGetTime();
-		float dt = static_cast<float>(current_time - previous_time);
-		previous_time = current_time;
-		angle += rotation_speed * dt;
-
 		// Render first pass to texture
 		glDrawElements(
 			GL_TRIANGLES, vertex_data.index_length, GL_UNSIGNED_BYTE, nullptr);
 
+
+		// Second render pass.
+		//
 		// Bind the window framebuffer.
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -320,6 +324,8 @@ int main(int argc, char* argv[]) {
 		glDrawElements(
 			GL_TRIANGLES, quad_data.index_length, GL_UNSIGNED_BYTE, nullptr);
 
+
+		// End of the frame.
 		glfwSwapBuffers(window.handle);
 		// Process input events.
 		glfwPollEvents();

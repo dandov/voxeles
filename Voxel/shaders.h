@@ -14,12 +14,12 @@ layout(location = 1) in vec3 color;
 
 out vec3 oColor;
 
-uniform mat4 worldFromModel;
-uniform mat4 viewFromWorld;
-uniform mat4 projFromView;
+uniform mat4 uWorldFromModel;
+uniform mat4 uViewFromWorld;
+uniform mat4 uProjFromView;
 
 void main(void) {
-	gl_Position = projFromView * viewFromWorld * worldFromModel * vec4(posModel, 1.0);
+	gl_Position = uProjFromView * uViewFromWorld * uWorldFromModel * vec4(posModel, 1.0);
 	oColor = vec3(posModel.xy, 1.0 - posModel.z);
 }
 )";
