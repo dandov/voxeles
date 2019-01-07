@@ -223,7 +223,6 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 
-	glUseProgram(shader.program_id);
 	// Use an identity matrix for |world_from_model|.
 	glm::mat4 world_from_model =
 		glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, -0.5f));
@@ -240,6 +239,7 @@ int main(int argc, char* argv[]) {
 	glm::mat4 proj_from_view =
 		glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
 	// Set the values of the uniforms.
+	glUseProgram(shader.program_id);
 	GLuint model_mat_loc =
 		glGetUniformLocation(shader.program_id, "uWorldFromModel");
 	glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, &world_from_model[0][0]);
@@ -249,20 +249,13 @@ int main(int argc, char* argv[]) {
 	GLuint proj_mat_loc =
 		glGetUniformLocation(shader.program_id, "uProjFromView");
 	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, &proj_from_view[0][0]);
-	assert(CheckGlError());
-	
-	const double PI = std::acos(-1);
-	const double rotation_speed = PI / 2.0;
-	float angle = 0.0;
-	double previous_time = glfwGetTime();
-
+	// Create an offscreen framebuffer.
 	FrameBuffer back_face_buffer;
 	if (!FrameBuffer::CreateFrameBuffer(&back_face_buffer, width, height)) {
 		assert(false);
 		return 0;
 	}
-
-	// Set the texture sampler uniform.
+	// Set the framebuffer as a texture in the sampler uniform.
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, back_face_buffer.texture.id);
 	const GLuint tex_uniform_loc =
@@ -275,6 +268,23 @@ int main(int argc, char* argv[]) {
 	glUseProgram(0);
 	assert(CheckGlError());
 
+	// Set the uniforms of the second pass shader.
+	glUseProgram(quad_shader.program_id);
+	GLuint model_mat_loc2 =
+		glGetUniformLocation(quad_shader.program_id, "uWorldFromModel");
+	glUniformMatrix4fv(model_mat_loc2, 1, GL_FALSE, &world_from_model[0][0]);
+	GLuint view_mat_loc2 =
+		glGetUniformLocation(quad_shader.program_id, "uViewFromWorld");
+	glUniformMatrix4fv(view_mat_loc2, 1, GL_FALSE, &view_from_world[0][0]);
+	GLuint proj_mat_loc2 =
+		glGetUniformLocation(quad_shader.program_id, "uProjFromView");
+	glUniformMatrix4fv(proj_mat_loc2, 1, GL_FALSE, &proj_from_view[0][0]);
+	assert(CheckGlError());
+
+	const double PI = std::acos(-1);
+	const double rotation_speed = PI / 2.0;
+	float angle = 0.0;
+	double previous_time = glfwGetTime();
 	// Set the color used to clear the screen.
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	while (!glfwWindowShouldClose(window.handle)) {
@@ -300,14 +310,12 @@ int main(int argc, char* argv[]) {
 		glBindVertexArray(vertex_data.vao);
 		// Enable back face culling. Front faces are CCW.
 		glEnable(GL_CULL_FACE);
-		// To render the outside of the cube, cull the back faces.
-		// glCullFace(GL_BACK);
 		// To render the inside of the cube, cull the front faces.
 		glCullFace(GL_FRONT);
 		glFrontFace(GL_CCW);
 		// Rotate.
 		glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, &rot_matrix[0][0]);
-		// Render first pass to texture
+		// Render first pass to texture.
 		glDrawElements(
 			GL_TRIANGLES, vertex_data.index_length, GL_UNSIGNED_BYTE, nullptr);
 
@@ -320,7 +328,12 @@ int main(int argc, char* argv[]) {
 		// Setup the second pass.
 		glUseProgram(quad_shader.program_id);
 		glBindVertexArray(quad_data.vao);
-		glDisable(GL_CULL_FACE);
+		// glBindVertexArray(vertex_data.vao);
+		// Rotate.
+		glUniformMatrix4fv(model_mat_loc2, 1, GL_FALSE, &rot_matrix[0][0]);
+		// To render the outside of the cube, cull the back faces.
+		glCullFace(GL_BACK);
+		// Render the second pass to the main framebuffer.
 		glDrawElements(
 			GL_TRIANGLES, quad_data.index_length, GL_UNSIGNED_BYTE, nullptr);
 
