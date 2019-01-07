@@ -154,34 +154,16 @@ int main(int argc, char* argv[]) {
 	// flushed. "GL ERROR[1280]: invalid enumerantAssertion failed".
 	CheckGlError();
 
-	Shader shader;
+	Shader back_shader;
 	if (!Shader::CreateShaders(
-			&shader, shaders::VERTEX_SHADER, shaders::FRAGMENT_SHADER)) {
+			&back_shader, shaders::VERTEX_SHADER, shaders::FRAGMENT_SHADER)) {
 		assert(CheckGlError());
 		return 0;
 	}
 
-	// Prepare the vertices of the first pass. 3 floats for position and 3
-	// floats for color.
-	std::vector<GLfloat> quad_vertices = {
-		/* pos = */ -1.0f, -1.0f, 0.0f, /* color = */ 0.0f, 0.0f, 0.0f,
-		1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-		1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-		-1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-	};
-	std::vector<GLubyte> quad_indices = {
-		0, 1, 2, 0, 2, 3,
-	};
-	VertexData quad_data;
-	if (!VertexData::CreateAndUploadVertexData(
-			&quad_data, quad_vertices, quad_indices)) {
-		assert(CheckGlError());
-		return 0;
-	}
-
-	Shader quad_shader;
+	Shader front_shader;
 	if (!Shader::CreateShaders(
-		&quad_shader, shaders::QUAD_VERTEX_SHADER,
+		&front_shader, shaders::QUAD_VERTEX_SHADER,
 		shaders::QUAD_FRAGMENT_SHADER)) {
 		assert(CheckGlError());
 		return 0;
@@ -239,15 +221,15 @@ int main(int argc, char* argv[]) {
 	glm::mat4 proj_from_view =
 		glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
 	// Set the values of the uniforms.
-	glUseProgram(shader.program_id);
+	glUseProgram(back_shader.program_id);
 	GLuint model_mat_loc =
-		glGetUniformLocation(shader.program_id, "uWorldFromModel");
+		glGetUniformLocation(back_shader.program_id, "uWorldFromModel");
 	glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, &world_from_model[0][0]);
 	GLuint view_mat_loc =
-		glGetUniformLocation(shader.program_id, "uViewFromWorld");
+		glGetUniformLocation(back_shader.program_id, "uViewFromWorld");
 	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, &view_from_world[0][0]);
 	GLuint proj_mat_loc =
-		glGetUniformLocation(shader.program_id, "uProjFromView");
+		glGetUniformLocation(back_shader.program_id, "uProjFromView");
 	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, &proj_from_view[0][0]);
 	// Create an offscreen framebuffer.
 	FrameBuffer back_face_buffer;
@@ -259,7 +241,7 @@ int main(int argc, char* argv[]) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, back_face_buffer.texture.id);
 	const GLuint tex_uniform_loc =
-		glGetUniformLocation(shader.program_id, "firstPassSampler");
+		glGetUniformLocation(back_shader.program_id, "firstPassSampler");
 	// Assign the texture unit to the sampler. 0 matches the active texture
 	// GL_TEXTURE0.
 	glUniform1i(tex_uniform_loc, 0);
@@ -269,15 +251,15 @@ int main(int argc, char* argv[]) {
 	assert(CheckGlError());
 
 	// Set the uniforms of the second pass shader.
-	glUseProgram(quad_shader.program_id);
+	glUseProgram(front_shader.program_id);
 	GLuint model_mat_loc2 =
-		glGetUniformLocation(quad_shader.program_id, "uWorldFromModel");
+		glGetUniformLocation(front_shader.program_id, "uWorldFromModel");
 	glUniformMatrix4fv(model_mat_loc2, 1, GL_FALSE, &world_from_model[0][0]);
 	GLuint view_mat_loc2 =
-		glGetUniformLocation(quad_shader.program_id, "uViewFromWorld");
+		glGetUniformLocation(front_shader.program_id, "uViewFromWorld");
 	glUniformMatrix4fv(view_mat_loc2, 1, GL_FALSE, &view_from_world[0][0]);
 	GLuint proj_mat_loc2 =
-		glGetUniformLocation(quad_shader.program_id, "uProjFromView");
+		glGetUniformLocation(front_shader.program_id, "uProjFromView");
 	glUniformMatrix4fv(proj_mat_loc2, 1, GL_FALSE, &proj_from_view[0][0]);
 	assert(CheckGlError());
 
@@ -306,7 +288,7 @@ int main(int argc, char* argv[]) {
 		// are cleared. In this case only the color buffer is cleared.
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		// Setup the first pass.
-		glUseProgram(shader.program_id);
+		glUseProgram(back_shader.program_id);
 		glBindVertexArray(vertex_data.vao);
 		// Enable back face culling. Front faces are CCW.
 		glEnable(GL_CULL_FACE);
@@ -326,7 +308,7 @@ int main(int argc, char* argv[]) {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		// Setup the second pass.
-		glUseProgram(quad_shader.program_id);
+		glUseProgram(front_shader.program_id);
 		glBindVertexArray(vertex_data.vao);
 		// Rotate.
 		glUniformMatrix4fv(model_mat_loc2, 1, GL_FALSE, &rot_matrix[0][0]);
