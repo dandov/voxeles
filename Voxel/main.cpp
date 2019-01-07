@@ -297,7 +297,7 @@ int main(int argc, char* argv[]) {
 
 		// Update logic.
 		glm::mat4 rot_matrix =
-			glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 0.0f, 0.0f));
+			glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
 		rot_matrix = rot_matrix * world_from_model;
 		glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, &rot_matrix[0][0]);
 
