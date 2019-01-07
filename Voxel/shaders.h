@@ -48,9 +48,8 @@ uniform mat4 uViewFromWorld;
 uniform mat4 uProjFromView;
 
 void main(void) {
-	gl_Position = vec4(posModel, 1.0);
 	oTexCoords = texCoords.xy;
-	// gl_Position = uProjFromView * uViewFromWorld * uWorldFromModel * vec4(posModel, 1.0);
+	gl_Position = uProjFromView * uViewFromWorld * uWorldFromModel * vec4(posModel, 1.0);
 	oColor = posModel;
 }
 )";
@@ -64,10 +63,9 @@ out vec4 fragColor;
 uniform sampler2D firstPassSampler;
 
 void main() {
-	vec2 uv = vec2(oTexCoords.x, oTexCoords.y);
-	vec4 tex_color = texture(firstPassSampler, uv);
-	fragColor = vec4(tex_color.rgb, 1.0);
-	// fragColor = vec4(oColor, 1.0);
+	// vec2 uv = vec2(oTexCoords.x, oTexCoords.y);
+	// vec4 tex_color = texture(firstPassSampler, uv);
+	fragColor = vec4(oColor, 1.0);
 }
 )";
 }  // namespace shaders

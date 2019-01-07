@@ -327,15 +327,14 @@ int main(int argc, char* argv[]) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		// Setup the second pass.
 		glUseProgram(quad_shader.program_id);
-		glBindVertexArray(quad_data.vao);
-		// glBindVertexArray(vertex_data.vao);
+		glBindVertexArray(vertex_data.vao);
 		// Rotate.
 		glUniformMatrix4fv(model_mat_loc2, 1, GL_FALSE, &rot_matrix[0][0]);
 		// To render the outside of the cube, cull the back faces.
 		glCullFace(GL_BACK);
 		// Render the second pass to the main framebuffer.
 		glDrawElements(
-			GL_TRIANGLES, quad_data.index_length, GL_UNSIGNED_BYTE, nullptr);
+			GL_TRIANGLES, vertex_data.index_length, GL_UNSIGNED_BYTE, nullptr);
 
 
 		// End of the frame.
