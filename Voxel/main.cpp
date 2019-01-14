@@ -116,6 +116,17 @@ class FrameBuffer {
 	  static void DestroyFrameBuffer(FrameBuffer* frame_buffer);
 };
 
+// Creates the geometry data of a cube and sets it in |data|.
+bool CreateCube(VertexData* data);
+
+// Sets the camera uniforms of |shader|.
+void SetCameraUniforms(const Shader& shader, float aspect_ratio);
+
+// Creates a new FrameBuffer that will be stored in |frame_buffer| and
+// sets it as a texture uniform in |shader|.
+bool CreateFrameBufferTexture(const Shader& shader, int width, int height,
+	FrameBuffer* frame_buffer);
+
 int main(int argc, char* argv[]) {
 	glfwSetErrorCallback([] (int error_code, const char* error_message) {
 		std::cout << "GLFW ERROR[" << error_code << "]: "
@@ -169,100 +180,33 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 
-	// Prepare the vertex and index buffer data of the second pass. The
-	// default culled face is CCW. Each vertex is 3 floats for position
-	// and 3 floats for color.
-	std::vector<GLfloat> vertices = {
-		// Front face.
-		0.0f, 0.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
-		1.0f, 1.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
-		// Back face
-		0.0f, 0.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
-	};
-	std::vector<GLubyte> indices = {
-		// Front face.
-		0, 1, 2, 0, 2, 3,
-		// Back face.
-		5, 4, 7, 5, 7, 6,
-		// Top Face.
-		3, 2, 6, 3, 6, 7,
-		// Bottom face.
-		4, 5, 1, 4, 1, 0,
-		// Right face.
-		1, 5, 6, 1, 6, 2,
-		// Left face.
-		4, 0, 3, 4, 3, 7,
-	};
 	VertexData vertex_data;
-	if (!VertexData::CreateAndUploadVertexData(
-			&vertex_data, vertices, indices)) {
-		assert(CheckGlError());
-		return 0;
-	}
-
-	// Use an identity matrix for |world_from_model|.
-	glm::mat4 world_from_model =
-		glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, -0.5f));
-	// Set the camera parallel to the floor, in front and looking towards the
-	// geometry from the +Z axis (outside the monitor).
-	glm::mat4 view_from_world =
-		glm::lookAt(
-			glm::vec3(0.0f, 0.0f, 10.f),
-			glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::vec3(0.0f, 1.0f, 0.0f));
-	// FOVY of 45 degrees, precalculated aspect ratio from the window dimensions,
-	// znear of 0.1 and zfar of 100 (relative values to the camera, z points
-	// inside the screen).
-	glm::mat4 proj_from_view =
-		glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
-	// Set the values of the uniforms.
-	glUseProgram(back_shader.program_id);
-	GLuint model_mat_loc =
-		glGetUniformLocation(back_shader.program_id, "uWorldFromModel");
-	glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, &world_from_model[0][0]);
-	GLuint view_mat_loc =
-		glGetUniformLocation(back_shader.program_id, "uViewFromWorld");
-	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, &view_from_world[0][0]);
-	GLuint proj_mat_loc =
-		glGetUniformLocation(back_shader.program_id, "uProjFromView");
-	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, &proj_from_view[0][0]);
-	// Create an offscreen framebuffer.
-	FrameBuffer back_face_buffer;
-	if (!FrameBuffer::CreateFrameBuffer(&back_face_buffer, width, height)) {
+	if (!CreateCube(&vertex_data)) {
 		assert(false);
 		return 0;
 	}
-	// Set the framebuffer as a texture in the sampler uniform.
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, back_face_buffer.texture.id);
-	const GLuint tex_uniform_loc =
-		glGetUniformLocation(back_shader.program_id, "firstPassSampler");
-	// Assign the texture unit to the sampler. 0 matches the active texture
-	// GL_TEXTURE0.
-	glUniform1i(tex_uniform_loc, 0);
-	// Unbind the program for cleanup.
-	// Don't unbind the texture from the unit 0.
-	glUseProgram(0);
-	assert(CheckGlError());
 
-	// Set the uniforms of the second pass shader.
-	glUseProgram(front_shader.program_id);
-	GLuint model_mat_loc2 =
+	// Initialize both shaders uniforms to their defaults.
+	SetCameraUniforms(back_shader, aspect_ratio);
+	SetCameraUniforms(front_shader, aspect_ratio);
+
+	// Create an offscreen framebuffer.
+	FrameBuffer back_face_buffer;
+	if (!CreateFrameBufferTexture(
+			front_shader, width, height, &back_face_buffer)) {
+		return 0;
+	}
+
+	// The cube is located at (0, 0, 0) to (1, 1, 1) so move it to the center
+	// of the screen i.e. (-0.5, -0.5, -0.5) to (0.5, 0.5, 0.5).
+	const glm::mat4 world_from_model =
+		glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, -0.5f));
+	const GLuint model_mat_loc =
+		glGetUniformLocation(back_shader.program_id, "uWorldFromModel");
+	const GLuint model_mat_loc2 =
 		glGetUniformLocation(front_shader.program_id, "uWorldFromModel");
-	glUniformMatrix4fv(model_mat_loc2, 1, GL_FALSE, &world_from_model[0][0]);
-	GLuint view_mat_loc2 =
-		glGetUniformLocation(front_shader.program_id, "uViewFromWorld");
-	glUniformMatrix4fv(view_mat_loc2, 1, GL_FALSE, &view_from_world[0][0]);
-	GLuint proj_mat_loc2 =
-		glGetUniformLocation(front_shader.program_id, "uProjFromView");
-	glUniformMatrix4fv(proj_mat_loc2, 1, GL_FALSE, &proj_from_view[0][0]);
-	assert(CheckGlError());
 
+	// Logic for rotating the cube.
 	const double PI = std::acos(-1);
 	const double rotation_speed = PI / 2.0;
 	float angle = 0.0;
@@ -326,6 +270,91 @@ int main(int argc, char* argv[]) {
 	}
 	
 	return 0;
+}
+
+bool CreateCube(VertexData* data) {
+	// Prepare the vertex and index buffer data of the second pass. The
+	// default culled face is CCW. Each vertex is 3 floats for position
+	// and 3 floats for color.
+	std::vector<GLfloat> vertices = {
+		// Front face.
+		0.0f, 0.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
+		1.0f, 0.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
+		1.0f, 1.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 1.0f, /* color = */1.0f, 0.0f, 0.0f,
+		// Back face
+		0.0f, 0.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
+		0.0f, 1.0f, 0.0f, /* color = */0.0f, 0.0f, 1.0f,
+	};
+	std::vector<GLubyte> indices = {
+		// Front face.
+		0, 1, 2, 0, 2, 3,
+		// Back face.
+		5, 4, 7, 5, 7, 6,
+		// Top Face.
+		3, 2, 6, 3, 6, 7,
+		// Bottom face.
+		4, 5, 1, 4, 1, 0,
+		// Right face.
+		1, 5, 6, 1, 6, 2,
+		// Left face.
+		4, 0, 3, 4, 3, 7,
+	};
+
+	return VertexData::CreateAndUploadVertexData(data, vertices, indices);
+}
+
+void SetCameraUniforms(const Shader& shader, float aspect_ratio) {
+	// Use an identity matrix for |world_from_model|.
+	glm::mat4 world_from_model(1.0f);
+	// Set the camera parallel to the floor, in front and looking towards the
+	// geometry from the +Z axis (outside the monitor).
+	glm::mat4 view_from_world =
+		glm::lookAt(
+			/* eye_pos = */ glm::vec3(0.0f, 0.0f, 10.f),
+			/* look_at = */ glm::vec3(0.0f, 0.0f, 0.0f),
+			/* up = */ glm::vec3(0.0f, 1.0f, 0.0f));
+	// FOVY of 45 degrees, precalculated aspect ratio from the window dimensions,
+	// znear of 0.1 and zfar of 100 (relative values to the camera, z points
+	// inside the screen).
+	glm::mat4 proj_from_view =
+		glm::perspective(glm::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
+	// Set the values of the uniforms of |shader|.
+	glUseProgram(shader.program_id);
+	GLuint model_mat_loc =
+		glGetUniformLocation(shader.program_id, "uWorldFromModel");
+	glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, &world_from_model[0][0]);
+	GLuint view_mat_loc =
+		glGetUniformLocation(shader.program_id, "uViewFromWorld");
+	glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, &view_from_world[0][0]);
+	GLuint proj_mat_loc =
+		glGetUniformLocation(shader.program_id, "uProjFromView");
+	glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, &proj_from_view[0][0]);
+	glUseProgram(0);
+	assert(CheckGlError());
+}
+
+bool CreateFrameBufferTexture(
+	const Shader& shader, int width, int height, FrameBuffer* frame_buffer) {
+	if (!FrameBuffer::CreateFrameBuffer(frame_buffer, width, height)) {
+		assert(false);
+		return false;
+	}
+	glUseProgram(shader.program_id);
+	// Set the framebuffer as a texture in the sampler uniform.
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, frame_buffer->texture.id);
+	const GLuint tex_uniform_loc =
+		glGetUniformLocation(shader.program_id, "firstPassSampler");
+	// Assign the texture unit to the sampler. 0 matches the active texture
+	// GL_TEXTURE0.
+	glUniform1i(tex_uniform_loc, 0);
+	// Unbind the program for cleanup.
+	// Don't unbind the texture from the unit 0.
+	glUseProgram(0);
+	assert(CheckGlError());
 }
 
 // TODO(dandov): Modify this to have mipmaps and other stuff when needed.
