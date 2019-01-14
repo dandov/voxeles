@@ -60,10 +60,15 @@ in vec2 oTexCoords;
 in vec3 oColor;
 out vec4 fragColor;
 
+uniform sampler1D tffSampler;
 uniform sampler2D firstPassSampler;
+uniform sampler3D voxelSampler;
 
 void main() {
-	// vec2 uv = vec2(oTexCoords.x, oTexCoords.y);
+	// TODO(dandov): Pass this as uniform.
+	vec2 screenSize = vec2(1080.0, 1080.0);
+	vec2 uv = gl_FragCoord.xy / screenSize;
+	
 	// vec4 tex_color = texture(firstPassSampler, uv);
 	fragColor = vec4(oColor, 1.0);
 }

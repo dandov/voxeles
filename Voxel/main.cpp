@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <cassert>
+#include <fstream>
+#include <sstream>
 #include <vector>
 
 #include <GL/glew.h>
@@ -128,9 +130,9 @@ bool CreateFrameBufferTexture(const Shader& shader, int width, int height,
 	FrameBuffer* frame_buffer);
 
 int main(int argc, char* argv[]) {
-	glfwSetErrorCallback([] (int error_code, const char* error_message) {
+	glfwSetErrorCallback([](int error_code, const char* error_message) {
 		std::cout << "GLFW ERROR[" << error_code << "]: "
-				  << error_message << "\n";
+			<< error_message << "\n";
 	});
 
 	if (!glfwInit()) {
@@ -146,14 +148,14 @@ int main(int argc, char* argv[]) {
 		assert(false);
 		return 0;
 	}
-	
+
 	const GLubyte* gl_renderer = glGetString(GL_RENDERER);
 	const GLubyte* gl_version = glGetString(GL_VERSION);
 	const GLubyte* glsl_version = glGetString(GL_SHADING_LANGUAGE_VERSION);
 	assert(CheckGlError());
 	std::cout << "Created GL Context: " << gl_renderer
-		      << "\n        Version: " << gl_version
-		      << "\n        GLSL Version: " << glsl_version << "\n";
+		<< "\n        Version: " << gl_version
+		<< "\n        GLSL Version: " << glsl_version << "\n";
 
 	// Load OpenGL extensions. Not needed for this demo.
 	glewExperimental = GL_TRUE;
@@ -167,7 +169,7 @@ int main(int argc, char* argv[]) {
 
 	Shader back_shader;
 	if (!Shader::CreateShaders(
-			&back_shader, shaders::VERTEX_SHADER, shaders::FRAGMENT_SHADER)) {
+		&back_shader, shaders::VERTEX_SHADER, shaders::FRAGMENT_SHADER)) {
 		assert(CheckGlError());
 		return 0;
 	}
@@ -193,8 +195,87 @@ int main(int argc, char* argv[]) {
 	// Create an offscreen framebuffer.
 	FrameBuffer back_face_buffer;
 	if (!CreateFrameBufferTexture(
-			front_shader, width, height, &back_face_buffer)) {
+		front_shader, width, height, &back_face_buffer)) {
 		return 0;
+	}
+
+	GLuint tff_tex_id;
+	{
+		// Read transfer function data.
+		std::string tff_data;
+		std::stringstream ss;
+		std::ifstream file;
+		file.open(
+			"tff.dat", std::ifstream::in | std::ifstream::binary);
+		if (!file.is_open()) {
+			assert(false);
+			return 0;
+		}
+		ss << file.rdbuf();
+		file.close();
+		tff_data = ss.str();
+		// Create texture and upload data to GPU.
+		glGenTextures(1, &tff_tex_id);
+		glBindTexture(GL_TEXTURE_1D, tff_tex_id);
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		// Sets how to read pixels. In this case reading 1 byte pixels.
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA8, 256, 0, GL_RGBA,
+			GL_UNSIGNED_BYTE, tff_data.data());
+
+		// Set the TFF texture uniform and bind it to texture unit 1.
+		glUseProgram(front_shader.program_id);
+		const GLuint tff_mat_loc =
+			glGetUniformLocation(front_shader.program_id, "tffSampler");
+		glActiveTexture(GL_TEXTURE0 + 1); // This is the same as GL_TEXTURE1.
+		glBindTexture(GL_TEXTURE_1D, tff_tex_id);
+		// Assign the texture unit to the sampler. 0 matches the active texture
+		// GL_TEXTURE1.
+		glUniform1i(tff_mat_loc, 1);
+		glUseProgram(0);
+		assert(CheckGlError());
+	}
+
+	GLuint voxel_tex_id;
+	{
+		// Read voxel data.
+		std::string voxel_data;
+		std::stringstream ss;
+		std::ifstream file;
+		file.open(
+			"head256.raw", std::ifstream::in | std::ifstream::binary);
+		if (!file.is_open()) {
+			assert(false);
+			return 0;
+		}
+		ss << file.rdbuf();
+		file.close();
+		voxel_data = ss.str();
+		// Create texture and upload data to GPU.
+		glGenTextures(1, &voxel_tex_id);
+		glBindTexture(GL_TEXTURE_3D, voxel_tex_id);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		assert(CheckGlError());
+		glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, 256, 256, 225, 0, GL_RED, GL_UNSIGNED_BYTE, voxel_data.data());
+		assert(CheckGlError());
+		// Set the voxel texture uniform and bind it to texture unit 2.
+		glUseProgram(front_shader.program_id);
+		const GLuint voxel_tex_loc =
+			glGetUniformLocation(front_shader.program_id, "voxelSampler");
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_3D, voxel_tex_id);
+		// Assign the texture unit to the sampler. 0 matches the active texture
+		// GL_TEXTURE1.
+		glUniform1i(voxel_tex_loc, 2);
+		glUseProgram(0);
+		assert(CheckGlError());
 	}
 
 	// The cube is located at (0, 0, 0) to (1, 1, 1) so move it to the center
@@ -231,6 +312,7 @@ int main(int argc, char* argv[]) {
 		// passed to this function is a bitmask that defines which buffers
 		// are cleared. In this case only the color buffer is cleared.
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
 		// Setup the first pass.
 		glUseProgram(back_shader.program_id);
 		glBindVertexArray(vertex_data.vao);
@@ -251,6 +333,7 @@ int main(int argc, char* argv[]) {
 		// Bind the window framebuffer.
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
 		// Setup the second pass.
 		glUseProgram(front_shader.program_id);
 		glBindVertexArray(vertex_data.vao);
@@ -387,6 +470,7 @@ bool FrameBuffer::CreateFrameBuffer(FrameBuffer* frame_buffer, int width, int he
 		return false;
 	}
 
+	glBindTexture(GL_TEXTURE_2D, frame_buffer->texture.id);
 	// Set the texture that was just created as the data of the frame buffer.
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
 		frame_buffer->texture.id, /* level = */ 0);
@@ -395,11 +479,13 @@ bool FrameBuffer::CreateFrameBuffer(FrameBuffer* frame_buffer, int width, int he
 	glGenRenderbuffers(1, &frame_buffer->depth_stencil_renderbuffer_id);
 	glBindRenderbuffer(GL_RENDERBUFFER, frame_buffer->depth_stencil_renderbuffer_id);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+	glEnable(GL_DEPTH_TEST);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	// Add the attachments to the frame buffer now that they are allocated.
 	glFramebufferRenderbuffer(
 		GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER,
 		frame_buffer->depth_stencil_renderbuffer_id);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	// Make sure that everything is correct before unbinding the frame buffer.
 	const bool success =
