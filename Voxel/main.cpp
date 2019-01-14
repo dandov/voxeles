@@ -293,7 +293,7 @@ int main(int argc, char* argv[]) {
 	float angle = 0.0;
 	double previous_time = glfwGetTime();
 	// Set the color used to clear the screen.
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 	while (!glfwWindowShouldClose(window.handle)) {
 		// Update logic.
 		double current_time = glfwGetTime();
