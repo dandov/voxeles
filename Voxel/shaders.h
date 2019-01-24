@@ -88,6 +88,7 @@ void main() {
 		float voxel = texture(voxelSampler, currentPos).r;
 		// Convert the voxel value into a color using the transfer function.
 		vec4 voxelColor = texture(tffSampler, voxel);
+		voxelColor.a = 1.0;
 		
 		// modulate the value of voxelColor.a
     	// front-to-back integration
@@ -107,8 +108,14 @@ void main() {
 		}
 	}
 
-	fragColor = texture(tffSampler, 255);
-	// fragColor = finalColor;
+	// vec4 color = texture(tffSampler, 0.99);
+	// fragColor = vec4(color.rgb, 1.0);
+	// finalColor.a = 1.0;
+    // fragColor = finalColor;
+
+	float voxel = texture(voxelSampler, vec3(oEntryPoint.xy, 0.5)).r;
+	fragColor = vec4(voxel, 0.0, 0.0, voxel);
+
 	// fragColor = vec4(oEntryPoint, 1.0);
 	// fragColor = vec4(exitPoint, 1.0);
 }

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <cstdint>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -214,10 +215,19 @@ int main(int argc, char* argv[]) {
 		ss << file.rdbuf();
 		file.close();
 		tff_data = ss.str();
+		for (int i = 0; i < 256; i++) {
+			std::cout << "("
+				<< +static_cast<uint8_t>(tff_data[i * 4]) << ", "
+				<< +static_cast<uint8_t>(tff_data[i * 4 + 1]) << ", "
+				<< +static_cast<uint8_t>(tff_data[i * 4 + 2]) << ", "
+				<< +static_cast<uint8_t>(tff_data[i * 4 + 3]) << ")\n";
+		}
+
 		// Create texture and upload data to GPU.
 		glGenTextures(1, &tff_tex_id);
 		glBindTexture(GL_TEXTURE_1D, tff_tex_id);
 		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		// For debugging GL_NEAREST makes 1.0 wrap to the initial value (a purplish color).
 		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		// Sets how to read pixels. In this case reading 1 byte pixels.
