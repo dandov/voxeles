@@ -7,7 +7,7 @@
 
 namespace shaders {
 	const GLchar* VERTEX_SHADER = R"(
-#version 450
+#version 400
 
 layout(location = 0) in vec3 posModel;
 layout(location = 1) in vec3 color;
@@ -24,7 +24,7 @@ void main(void) {
 }
 )";
 	const GLchar* FRAGMENT_SHADER = R"(
-#version 450
+#version 400
 
 in vec3 oColor;
 out vec4 fragColor;
@@ -35,7 +35,7 @@ void main() {
 )";
 
 	const GLchar* QUAD_VERTEX_SHADER = R"(
-#version 450
+#version 400
 
 layout(location = 0) in vec3 posModel;
 layout(location = 1) in vec3 texCoords;
@@ -52,7 +52,7 @@ void main(void) {
 }
 )";
 	const GLchar* QUAD_FRAGMENT_SHADER = R"(
-#version 450
+#version 400
 
 in vec3 oEntryPoint;
 

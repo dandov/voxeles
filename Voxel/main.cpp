@@ -674,7 +674,7 @@ bool Window::CreateWindow(Window* window, int width, int height) {
 	// Ask for desktop OpenGL 4.5.
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	// Request only core functionality i.e. without pre 3.1 deprecated APIs.
 	// Use GLFW_OPENGL_COMPAT_PROFILE to get that deprecated stuff.
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
