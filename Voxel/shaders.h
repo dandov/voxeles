@@ -52,6 +52,7 @@ void main(void) {
 }
 )";
 	const GLchar* QUAD_FRAGMENT_SHADER = R"(
+
 #version 400
 
 in vec3 oEntryPoint;
@@ -69,53 +70,35 @@ void main() {
 	vec2 uv = gl_FragCoord.xy / screenSize;
 	// Sample the first pass texture to obtain the exit point of the ray.
 	vec3 exitPoint = texture(firstPassSampler, uv).rgb;
-	// Discard pixels that are part of the background.
-	if (oEntryPoint == exitPoint) {
-		discard;
-	}
 
 	vec3 rayDir = exitPoint - oEntryPoint;
 	vec3 normRayDir = normalize(rayDir);
 	
 	// TODO(dandov): Pass these as uniforms.
-	int sampleCount = 1000;
-	float stepSize = 1.0 / float(sampleCount);
+	float sampleCount = 1000.0;
+	float stepSize = 1.0 / sampleCount;
 	vec4 backgroundColor = vec4(1.0, 1.0, 1.0, 0.0);
 
-	vec4 finalColor = vec4(0.0);
+	vec4 finalColor = vec4(1.0);
+	finalColor.a = 0.0;
 	for (int i = 0; i < sampleCount; i++) {
 		vec3 currentPos = oEntryPoint + (normRayDir * (stepSize * i));
 		float voxel = texture(voxelSampler, currentPos).r;
-		// Convert the voxel value into a color using the transfer function.
-		vec4 voxelColor = texture(tffSampler, voxel);
-		voxelColor.a = 1.0;
-		
-		// modulate the value of voxelColor.a
-    	// front-to-back integration
-    	if (finalColor.a > 0.0) {
-    	    // accomodate for variable sampling rates (base interval defined by mod_compositing.frag)
-    	    voxelColor.a = 1.0 - pow(1.0 - voxelColor.a, stepSize * 200.0f);
-    	    finalColor.rgb += (1.0 - finalColor.a) * voxelColor.rgb * voxelColor.a;
-    	    finalColor.a += (1.0 - finalColor.a) * voxelColor.a;
-    	}
-		if (i > 0) {
-			finalColor.rgb = finalColor.rgb * finalColor.a +
-				(1 - finalColor.a) * backgroundColor.rgb;
-			break;
-		} else if (finalColor.a > 1.0) {
+		if (voxel > 0.1) {
+			finalColor = texture(tffSampler, voxel);
 			finalColor.a = 1.0;
 			break;
-		}
+		}		
 	}
 
-	vec4 color = texture(tffSampler, 0.99);
-	fragColor = vec4(color.rgb, 1.0);
-	// finalColor.a = 1.0;
-    // fragColor = finalColor;
-
 	// This one samples the voxel at the center of the dataset in the xy entry point.
-	float voxel = texture(voxelSampler, vec3(oEntryPoint.xy, 0.5)).r;
-	fragColor = vec4(voxel, 0.0, 0.0, voxel);
+	// float voxel = texture(voxelSampler, vec3(oEntryPoint.xy, 0.5)).r;
+	// fragColor = vec4(voxel, 0.0, 0.0, voxel);
+	// fragColor = vec4(normRayDir * -1.0 , 1.0);
+	fragColor = finalColor;
+
+	// vec4 color = texture(tffSampler, 0.5);
+	// fragColor = vec4(color.rgb, 1.0);
 
 	// fragColor = vec4(oEntryPoint, 1.0);
 	// fragColor = vec4(exitPoint, 1.0);

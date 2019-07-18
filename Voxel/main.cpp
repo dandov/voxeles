@@ -309,7 +309,7 @@ int main(int argc, char* argv[]) {
 		double current_time = glfwGetTime();
 		float dt = static_cast<float>(current_time - previous_time);
 		previous_time = current_time;
-		// angle += rotation_speed * dt;
+		angle += rotation_speed * dt;
 		glm::mat4 rot_matrix =
 			glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0f, 1.0f, 0.0f));
 		rot_matrix = rot_matrix * world_from_model;
