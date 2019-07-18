@@ -108,11 +108,12 @@ void main() {
 		}
 	}
 
-	// vec4 color = texture(tffSampler, 0.99);
-	// fragColor = vec4(color.rgb, 1.0);
+	vec4 color = texture(tffSampler, 0.99);
+	fragColor = vec4(color.rgb, 1.0);
 	// finalColor.a = 1.0;
     // fragColor = finalColor;
 
+	// This one samples the voxel at the center of the dataset in the xy entry point.
 	float voxel = texture(voxelSampler, vec3(oEntryPoint.xy, 0.5)).r;
 	fragColor = vec4(voxel, 0.0, 0.0, voxel);
 
