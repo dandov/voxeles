@@ -76,7 +76,9 @@ void main() {
 	
 	// TODO(dandov): Pass these as uniforms.
 	float sampleCount = 1000.0;
-	float stepSize = 1.0 / sampleCount;
+	// TODO(dandov): Maybe do something smarter here because it is a waste to
+	// to sample so many times in fragments that have small lenghts.
+	float stepSize = length(rayDir) / sampleCount;
 	vec4 backgroundColor = vec4(1.0, 1.0, 1.0, 0.0);
 
 	vec4 finalColor = vec4(1.0);
@@ -84,8 +86,15 @@ void main() {
 	for (int i = 0; i < sampleCount; i++) {
 		vec3 currentPos = oEntryPoint + (normRayDir * (stepSize * i));
 		float voxel = texture(voxelSampler, currentPos).r;
-		if (voxel > 0.1) {
-			finalColor = texture(tffSampler, voxel);
+		// Use this value to render different layers of the data. It seems that
+		// the volume represents some kind of density. Mixing it first touch of
+		// of the ray we can get parts like the head or skull.
+		float threshold = 0.5;
+		if (voxel > threshold) {
+			// Don't use the transfer function because it requires a lot of knowledge
+			// about what the volume data represents.
+			// finalColor = texture(tffSampler, voxel);
+			finalColor.rgb = vec3(0.8, 0.8, 0.8);
 			finalColor.a = 1.0;
 			break;
 		}		
@@ -96,12 +105,6 @@ void main() {
 	// fragColor = vec4(voxel, 0.0, 0.0, voxel);
 	// fragColor = vec4(normRayDir * -1.0 , 1.0);
 	fragColor = finalColor;
-
-	// vec4 color = texture(tffSampler, 0.5);
-	// fragColor = vec4(color.rgb, 1.0);
-
-	// fragColor = vec4(oEntryPoint, 1.0);
-	// fragColor = vec4(exitPoint, 1.0);
 }
 )";
 }  // namespace shaders
