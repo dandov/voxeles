@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cassert>
 #include <cstdint>
+#include <math.h>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -288,9 +289,13 @@ int main(int argc, char* argv[]) {
 		assert(CheckGlError());
 	}
 
-	// The cube is located at (0, 0, 0) to (1, 1, 1) so move it to the center
-	// of the screen i.e. (-0.5, -0.5, -0.5) to (0.5, 0.5, 0.5).
+	const double PI = std::acos(-1);
+	
 	const glm::mat4 world_from_model =
+		// Rotate the cube 90 deg on the X axis to make it face the camera.
+		glm::rotate(glm::mat4(1.0f), static_cast<float>(PI) / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f)) *
+		// The cube is located at (0, 0, 0) to (1, 1, 1) so move it to the center
+		// of the screen i.e. (-0.5, -0.5, -0.5) to (0.5, 0.5, 0.5).
 		glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, -0.5f));
 	const GLuint model_mat_loc =
 		glGetUniformLocation(back_shader.program_id, "uWorldFromModel");
@@ -298,7 +303,6 @@ int main(int argc, char* argv[]) {
 		glGetUniformLocation(front_shader.program_id, "uWorldFromModel");
 
 	// Logic for rotating the cube.
-	const double PI = std::acos(-1);
 	const double rotation_speed = PI / 2.0;
 	float angle = 0.0;
 	double previous_time = glfwGetTime();

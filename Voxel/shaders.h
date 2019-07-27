@@ -89,12 +89,12 @@ void main() {
 		// Use this value to render different layers of the data. It seems that
 		// the volume represents some kind of density. Mixing it first touch of
 		// of the ray we can get parts like the head or skull.
-		float threshold = 0.5;
+		float threshold = 0.2;
 		if (voxel > threshold) {
 			// Don't use the transfer function because it requires a lot of knowledge
 			// about what the volume data represents.
-			// finalColor = texture(tffSampler, voxel);
-			finalColor.rgb = vec3(0.8, 0.8, 0.8);
+			finalColor = texture(tffSampler, voxel);
+			// finalColor.rgb = vec3(1.0, 0.0, 0.0);
 			finalColor.a = 1.0;
 			break;
 		}		
