@@ -81,30 +81,32 @@ void main() {
 	float stepSize = length(rayDir) / sampleCount;
 	vec4 backgroundColor = vec4(1.0, 1.0, 1.0, 0.0);
 
-	vec4 finalColor = vec4(1.0);
-	finalColor.a = 0.0;
+	vec3 finalColor = vec3(0.0);
+	float finalAlpha = 0.0;
 	for (int i = 0; i < sampleCount; i++) {
+		if (finalAlpha > 1.0) {
+			break;
+		}
+		// Update the ray and sample the volume.
 		vec3 currentPos = oEntryPoint + (normRayDir * (stepSize * i));
 		float voxel = texture(voxelSampler, currentPos).r;
-		// Use this value to render different layers of the data. It seems that
-		// the volume represents some kind of density. Mixing it first touch of
-		// of the ray we can get parts like the head or skull.
-		float threshold = 0.2;
-		if (voxel > threshold) {
-			// Don't use the transfer function because it requires a lot of knowledge
-			// about what the volume data represents.
-			finalColor = texture(tffSampler, voxel);
-			// finalColor.rgb = vec3(1.0, 0.0, 0.0);
-			finalColor.a = 1.0;
-			break;
-		}		
+	
+		// Transform the voxel into a color using the transfer function.
+		vec4 voxelColor = texture(tffSampler, voxel);
+		// Don't forget to premultiply the alpha. This fixes overflow issues when
+		// compositing.
+		voxelColor.rgb *= voxelColor.a;
+
+		// Now just do front-to-back compositing.
+		finalColor = (1 - finalAlpha) * voxelColor.rgb + finalColor;
+		finalAlpha = (1 - finalAlpha) * voxelColor.a + finalAlpha;
 	}
 
 	// This one samples the voxel at the center of the dataset in the xy entry point.
 	// float voxel = texture(voxelSampler, vec3(oEntryPoint.xy, 0.5)).r;
 	// fragColor = vec4(voxel, 0.0, 0.0, voxel);
 	// fragColor = vec4(normRayDir * -1.0 , 1.0);
-	fragColor = finalColor;
+	fragColor = vec4(finalColor, finalAlpha);
 }
 )";
 }  // namespace shaders

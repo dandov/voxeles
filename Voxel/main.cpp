@@ -292,6 +292,7 @@ int main(int argc, char* argv[]) {
 	const double PI = std::acos(-1);
 	
 	const glm::mat4 world_from_model =
+		glm::scale(glm::mat4(1.0), glm::vec3(3.0)) *
 		// Rotate the cube 90 deg on the X axis to make it face the camera.
 		glm::rotate(glm::mat4(1.0f), static_cast<float>(PI) / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f)) *
 		// The cube is located at (0, 0, 0) to (1, 1, 1) so move it to the center
@@ -307,7 +308,11 @@ int main(int argc, char* argv[]) {
 	float angle = 0.0;
 	double previous_time = glfwGetTime();
 	// Set the color used to clear the screen.
-	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	// Enable blending. This allows the empty voxel of the volume to be transparent.
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	while (!glfwWindowShouldClose(window.handle)) {
 		// Update logic.
 		double current_time = glfwGetTime();
@@ -686,11 +691,11 @@ bool Window::CreateWindow(Window* window, int width, int height) {
 	// Otherwise deprecated APIs (currently a hint that they will be removed in
 	// the future)  will be removed. This is only used on MacOS (of course).
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_FALSE);
-	// Ask for an RGB888 buffer.
+	// Ask for an RGB8888 buffer.
 	glfwWindowHint(GLFW_RED_BITS, 8);
 	glfwWindowHint(GLFW_GREEN_BITS, 8);
 	glfwWindowHint(GLFW_BLUE_BITS, 8);
-	glfwWindowHint(GLFW_ALPHA_BITS, 0);
+	glfwWindowHint(GLFW_ALPHA_BITS, 8);
 	// 4x antialiasing. Number of samples for multisampling. I think it means
 	// the buffer is 4x size and that allows to do 4 samples per pixel.
 	glfwWindowHint(GLFW_SAMPLES, 4);
