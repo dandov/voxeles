@@ -1,7 +1,7 @@
 .vs
 
-Debug/*
-Release/*
+Debug/Voxel.*
+Release/Voxel.*
 
 Voxel/Debug/*
 Voxel/Debug/**/*
