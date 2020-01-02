@@ -216,13 +216,6 @@ int main(int argc, char* argv[]) {
 		ss << file.rdbuf();
 		file.close();
 		tff_data = ss.str();
-		for (int i = 0; i < 256; i++) {
-			std::cout << "("
-				<< +static_cast<uint8_t>(tff_data[i * 4]) << ", "
-				<< +static_cast<uint8_t>(tff_data[i * 4 + 1]) << ", "
-				<< +static_cast<uint8_t>(tff_data[i * 4 + 2]) << ", "
-				<< +static_cast<uint8_t>(tff_data[i * 4 + 3]) << ")\n";
-		}
 
 		// Create texture and upload data to GPU.
 		glGenTextures(1, &tff_tex_id);

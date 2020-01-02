@@ -5,11 +5,9 @@ Release/Voxel.*
 
 Voxel/Debug/*
 Voxel/Debug/**/*
+Voxel/x64/Debug/*
+Voxel/x64/Debug/**/*
 Voxel/Release/*
 Voxel/Release/**/*
-
-./Voxel/Debug/*
-./Voxel/Debug/**/*
-./Voxel/Release/*
-./Voxel/Release/**/*
-
+Voxel/x64/Release/*
+Voxel/x64/Release/**/*

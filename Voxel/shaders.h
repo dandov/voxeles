@@ -98,8 +98,8 @@ void main() {
 		voxelColor.rgb *= voxelColor.a;
 
 		// Now just do front-to-back compositing.
-		finalColor = (1 - finalAlpha) * voxelColor.rgb + finalColor;
-		finalAlpha = (1 - finalAlpha) * voxelColor.a + finalAlpha;
+		finalColor = (1.0 - finalAlpha) * voxelColor.rgb + finalColor;
+		finalAlpha = (1.0 - finalAlpha) * voxelColor.a + finalAlpha;
 	}
 
 	// This one samples the voxel at the center of the dataset in the xy entry point.
